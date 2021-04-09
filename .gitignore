@@ -1,14 +1,32 @@
+HELP.md
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+# Default ignored files
+/.idea/workspace.xml
+
+# Work around https://youtrack.jetbrains.com/issue/IDEA-116898
+gradle/wrapper/gradle-wrapper.properties
+/build/
+.gradle
+
+### VS Code ###
+.vscode/
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+
 # Compiled class file
 *.class
 
 # Log file
 *.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
 
 # Package Files #
 *.jar
