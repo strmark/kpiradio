@@ -13,21 +13,21 @@ data class Alarm (
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Int? = null,
+    var id: Int,
 
     @Column(length = 50, nullable = false, unique = false)
-    var name: String? = null,
+    var name: String,
 
-    var monday: Boolean = false,
-    var tuesday: Boolean = false,
-    var wednesday: Boolean = false,
-    var thursday: Boolean = false,
-    var friday: Boolean = false,
-    var saturday: Boolean = false,
-    var sunday: Boolean = false,
-    var hour: Int = 0,
-    var minute: Int = 0,
-    var autoStopMinutes: Int = 0,
-    var isActive: Boolean = false,
-    var webradio: Int = 0
+    var monday: Boolean,
+    var tuesday: Boolean,
+    var wednesday: Boolean,
+    var thursday: Boolean,
+    var friday: Boolean,
+    var saturday: Boolean,
+    var sunday: Boolean,
+    var hour: Int,
+    var minute: Int,
+    var autoStopMinutes: Int,
+    var isActive: Boolean,
+    var webradio: Int
 ){}

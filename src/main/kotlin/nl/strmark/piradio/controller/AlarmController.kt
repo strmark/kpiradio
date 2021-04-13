@@ -41,8 +41,8 @@ class AlarmController(
     fun findAll() = alarmRepository.findAll()
 
     @PostMapping(path = ["/alarms"])
-    fun saveAlarm(@RequestBody alarmData: Alarm?): Alarm? {
-        return saveAlarm(alarmData, null)
+    fun saveAlarm(@RequestBody alarm: Alarm): Alarm? {
+        return alarmRepository.save(alarm)
     }
 
     @GetMapping(path = ["/alarms/{id}"])
@@ -53,22 +53,27 @@ class AlarmController(
 
     @PutMapping(path = ["/alarms/{id}"])
     fun updateAlarm(
-        @PathVariable(value = "id") alarmId: Int?,
-        @RequestBody alarmDetails: Alarm?
+        @PathVariable(value = "id") alarmId: Int,
+        @RequestBody alarmDetails: Alarm
     ): Alarm? {
+        assert(alarmDetails.id == alarmId)
+        val alarm: Alarm? = alarmRepository.findById(alarmId)
+            .orElseThrow { ResourceNotFoundException(ALARM, "id", alarmId) }
+
         return when {
-            alarmDetails != null -> {
+            alarm != null -> {
                 scheduleAlarm(
                     alarmDetails.webradio,
                     alarmDetails.isActive,
                     alarmDetails.autoStopMinutes,
                     getCronSchedule(alarmDetails)
                 )
-                saveAlarm(alarmDetails, alarmId)
+                saveAlarm(alarm, alarmDetails)
             }
             else -> null
         }
     }
+
 
     @DeleteMapping(path = ["/alarms/{id}"])
     fun deleteAlarm(@PathVariable(value = "id") alarmId: Int): ResponseEntity<Long> {
@@ -93,7 +98,6 @@ class AlarmController(
             }
             else -> ResponseEntity.notFound().build()
         }
-
     }
 
     private fun scheduleAlarm(webradioId: Int, isActive: Boolean, autoStopMinutes: Int, cronSchedule: String) {
@@ -141,6 +145,23 @@ class AlarmController(
         }
     }
 
+    private fun saveAlarm(alarm: Alarm, alarmDetails: Alarm): Alarm {
+        alarm.minute = alarmDetails.minute
+        alarm.hour = alarmDetails.hour
+        alarm.name = alarmDetails.name
+        alarm.monday = alarmDetails.monday
+        alarm.tuesday = alarmDetails.tuesday
+        alarm.wednesday = alarmDetails.wednesday
+        alarm.thursday = alarmDetails.thursday
+        alarm.friday = alarmDetails.friday
+        alarm.saturday = alarmDetails.saturday
+        alarm.sunday = alarmDetails.sunday
+        alarm.autoStopMinutes = alarmDetails.autoStopMinutes
+        alarm.isActive = alarmDetails.isActive
+        alarm.webradio = alarmDetails.webradio
+        return alarmRepository.save(alarm)
+    }
+
     private fun getCronSchedule(alarmDetails: Alarm?): String {
         //0 45 6 ? * MON,TUE,WED,THU,FRI *
         val cronSchedule = ("0 "
@@ -171,41 +192,6 @@ class AlarmController(
                 }
             }
             else -> ""
-        }
-    }
-
-    private fun saveAlarm(alarmData: Alarm?, alarmId: Int?): Alarm? {
-        var alarm = Alarm()
-        when {
-            alarmId != null -> {
-                alarmRepository.findById(alarmId)
-                    .orElseThrow { ResourceNotFoundException(ALARM, "id", alarmId) }.also {
-                        when {
-                            it != null -> {
-                                alarm = it
-                            }
-                        }
-                    }
-            }
-        }
-        return when {
-            alarmData != null -> {
-                alarm.minute = alarmData.minute
-                alarm.hour = alarmData.hour
-                alarm.name = alarmData.name
-                alarm.monday = alarmData.monday
-                alarm.tuesday = alarmData.tuesday
-                alarm.wednesday = alarmData.wednesday
-                alarm.thursday = alarmData.thursday
-                alarm.friday = alarmData.friday
-                alarm.saturday = alarmData.saturday
-                alarm.sunday = alarmData.sunday
-                alarm.autoStopMinutes = alarmData.autoStopMinutes
-                alarm.isActive = alarmData.isActive
-                alarm.webradio = alarmData.webradio
-                alarmRepository.save(alarm)
-            }
-            else -> null
         }
     }
 
