@@ -21,6 +21,7 @@ repositories {
 }
 
 dependencies {
+    val versions = kpi.versions
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-jetty")
     implementation("org.springframework.boot:spring-boot-starter-quartz")
@@ -30,16 +31,16 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("io.springfox:springfox-swagger-ui:${kpi.versions.swagger.get()}")
-    implementation("io.springfox:springfox-boot-starter:${kpi.versions.swagger.get()}")
-    implementation("io.github.microutils:kotlin-logging:${kpi.versions.klogging.get()}")
+    implementation("io.springfox:springfox-swagger-ui:${versions.swagger.get()}")
+    implementation("io.springfox:springfox-boot-starter:${versions.swagger.get()}")
+    implementation("io.github.microutils:kotlin-logging:${versions.klogging.get()}")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-    implementation("com.h2database:h2:${kpi.versions.h2db.get()}")
-    implementation("org.flywaydb:flyway-core:${kpi.versions.flyway.get()}")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${kpi.versions.kotlinx.get()}")
+    implementation("com.h2database:h2:${versions.h2db.get()}")
+    implementation("org.flywaydb:flyway-core:${versions.flyway.get()}")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${versions.kotlinx.get()}")
     runtimeOnly("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:${kpi.versions.junit.get()}")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:${versions.junit.get()}")
 }
 
 tasks.withType<KotlinCompile> {
