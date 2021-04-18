@@ -15,6 +15,7 @@ class VlcPlayer {
     private val vlcPlayerPath: String? = null
     private var vlcplayerProcess: Process? = null
     private var vlcplayerOutErr: BufferedReader? = null
+    private val expected: String = "Starting playback..."
 
     @Throws(IOException::class, InterruptedException::class)
     fun open(url: String, autoStopMinutes: Int) {
@@ -45,17 +46,15 @@ class VlcPlayer {
             }
         }
         // wait to start playing
-        waitForAnswer("Starting playback...")
+        waitForAnswer(expected)
         logger.info { "Started playing file $url" }
     }
 
     fun close() {
         // stop the vlcplayer
-        when {
-            vlcplayerProcess != null -> {
-                vlcplayerProcess?.destroy()
-                vlcplayerProcess = null
-            }
+        if (vlcplayerProcess != null) {
+            vlcplayerProcess?.destroy()
+            vlcplayerProcess = null
         }
     }
 

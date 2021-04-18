@@ -30,4 +30,4 @@ data class Alarm (
     var autoStopMinutes: Int,
     var isActive: Boolean,
     var webradio: Int
-){}
+)

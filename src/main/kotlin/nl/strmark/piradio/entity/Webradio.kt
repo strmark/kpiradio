@@ -23,4 +23,4 @@ data class Webradio (
 
     @Column(name = "is_default", nullable = false)
     var isDefault: Boolean
-){}
+)

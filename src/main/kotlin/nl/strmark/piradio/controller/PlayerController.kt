@@ -1,6 +1,7 @@
 package nl.strmark.piradio.controller
 
-import com.fasterxml.jackson.databind.util.JSONPObject
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
 import mu.KotlinLogging
 import nl.strmark.piradio.entity.Webradio
 import nl.strmark.piradio.payload.PlayerRequest
@@ -20,10 +21,10 @@ class PlayerController(private val webradioRepository: WebradioRepository, priva
 
 
     @GetMapping(path = ["/player"], produces = ["application/json"])
-    fun get() = "{\"status\":\"on\"}"
+    fun get(): JsonElement = Json.parseToJsonElement("""{"status":"on"}""")
 
     @PostMapping(path = ["/player"], produces = ["application/json"])
-    fun updatePlayer(@RequestBody player: PlayerRequest): String {
+    fun updatePlayer(@RequestBody player: PlayerRequest): JsonElement {
         logger.info("Webradio: ${player.webradio}")
         logger.info("Status: ${player.status}")
         return when (player.status) {
@@ -32,7 +33,7 @@ class PlayerController(private val webradioRepository: WebradioRepository, priva
         }
     }
 
-    private fun startPlayer(webradioId: Int?, autoStopMinutes: Int?): String {
+    private fun startPlayer(webradioId: Int?, autoStopMinutes: Int?): JsonElement {
         logger.info { "Webradio: id = $webradioId" }
         logger.info { "Webradio: autostop = $autoStopMinutes" }
         val url: String? = when (webradioId) {
@@ -87,24 +88,24 @@ class PlayerController(private val webradioRepository: WebradioRepository, priva
             .orElse(null)
     }
 
-    fun startPlayer(url: String?, autoStopMinutes: Int?): String {
+    fun startPlayer(url: String?, autoStopMinutes: Int?): JsonElement {
         try {
             // no timer so minutes 0l
             if (url != null && autoStopMinutes != null) vlcplayer.open(url, autoStopMinutes)
-        } catch (exeception: Exception) {
-            logger.error { "$exeception.message, $exeception" }
+        } catch (exception: Exception) {
+            logger.error { "$exception.message, $exception" }
         }
-        return "{\"status\":\"on\"}"
+        return Json.parseToJsonElement("""{"status":"on"}""")
     }
 
-    fun stopPlayer(): String {
+    fun stopPlayer(): JsonElement {
         // stop playing and return status off
         try {
             vlcplayer.close()
         } catch (exception: Exception) {
             logger.error { "$exception.message, $exception" }
         }
-        return "{\"status\":\"off\"}"
+        return Json.parseToJsonElement("""{"status":"off"}""")
     }
 
     companion object {
