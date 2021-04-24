@@ -12,7 +12,7 @@ class AlarmRepositoryTest(@Autowired val alarmRepository: AlarmRepository) {
     @Test
     fun whenFindByIdThenReturnRadio() {
         val alarm = Alarm(
-            id = 999,
+            id = 0,
             name = "Alarmtest",
             monday = false,
             tuesday = false,
@@ -32,4 +32,5 @@ class AlarmRepositoryTest(@Autowired val alarmRepository: AlarmRepository) {
         val found = alarmRepository.findById(saved.id)
         Assertions.assertThat(found.get()).isEqualTo(saved)
     }
+
 }

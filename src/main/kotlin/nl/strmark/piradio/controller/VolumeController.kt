@@ -15,6 +15,7 @@ import kotlin.math.ceil
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 @RestController
 class VolumeController {
+
     @GetMapping(path = ["/volume"], produces = ["application/json"])
     fun getVolume(): JsonElement {
         var volume = Audio.speakerOutputVolume?.times(100)?.toDouble()?.let { ceil(it).toInt() } ?: 0

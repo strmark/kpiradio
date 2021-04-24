@@ -12,7 +12,7 @@ class WebradioRepositoryTest(@Autowired val webradioRepository: WebradioReposito
     @Test
     fun whenFindByIdThenReturnRadio() {
         val radio = Webradio(
-            id = 999,
+            id = 0,
             name = "test",
             url = "http://test",
             isDefault = false
@@ -23,6 +23,3 @@ class WebradioRepositoryTest(@Autowired val webradioRepository: WebradioReposito
         assertThat(found.get()).isEqualTo(saved)
     }
 }
-
-
-

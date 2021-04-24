@@ -2,14 +2,15 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `version-catalog`
+    jacoco
     id("org.springframework.boot") version "2.4.5"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("org.flywaydb.flyway") version "7.8.1"
     id("com.github.ben-manes.versions") version "0.38.0"
-    kotlin("jvm") version "1.5.0-RC"
-    kotlin("plugin.spring") version "1.5.0-RC"
-    kotlin("plugin.jpa") version "1.5.0-RC"
-    kotlin("plugin.serialization") version "1.5.0-RC"
+    kotlin("jvm") version "1.4.32"
+    kotlin("plugin.spring") version "1.4.32"
+    kotlin("plugin.jpa") version "1.4.32"
+    kotlin("plugin.serialization") version "1.4.32"
 }
 
 group = "nl.strmark"
@@ -52,10 +53,25 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test) // tests are required to run before generating the report
+    reports {
+        xml.isEnabled = false
+        csv.isEnabled = false
+        html.destination = layout.buildDirectory.dir("jacocoHtml").get().asFile
+    }
 }
 
 flyway {
     url = "jdbc:h2:file:~/db/piradio"
     user = "pi"
     password = "pi"
+}
+
+jacoco {
+    toolVersion = "0.8.6"
+    reportsDirectory.set(layout.buildDirectory.dir("customJacocoReportDir"))
 }

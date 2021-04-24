@@ -29,19 +29,11 @@ class VlcPlayer {
                 vlcplayerOutErr = BufferedReader(InputStreamReader(readFrom))
                 when {
                     autoStopMinutes > 0 && vlcplayerProcess?.waitFor(autoStopMinutes.toLong(), TimeUnit.MINUTES)
-                        ?.not() == true -> {
-                        vlcplayerProcess?.destroy()
-                        vlcplayerProcess = null
-                    }
+                        ?.not() == true -> close()
                 }
             }
             else -> {
-                when {
-                    vlcplayerProcess != null -> {
-                        vlcplayerProcess?.destroy()
-                        vlcplayerProcess = null
-                    }
-                }
+                close()
                 open(url, autoStopMinutes)
             }
         }
