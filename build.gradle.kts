@@ -1,15 +1,16 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    val kotlin_version = "1.5.0"
     `version-catalog`
     id("org.springframework.boot") version "2.4.5"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("org.flywaydb.flyway") version "7.8.1"
     id("com.github.ben-manes.versions") version "0.38.0"
-    kotlin("jvm") version "1.5.0"
-    kotlin("plugin.spring") version "1.5.0"
-    kotlin("plugin.jpa") version "1.5.0"
-    kotlin("plugin.serialization") version "1.5.0"
+    kotlin("jvm") version kotlin_version
+    kotlin("plugin.spring") version kotlin_version
+    kotlin("plugin.jpa") version kotlin_version
+    kotlin("plugin.serialization") version kotlin_version
 }
 
 group = "nl.strmark"
@@ -56,7 +57,7 @@ tasks.withType<Test> {
 }
 
 flyway {
-    url = "jdbc:h2:file:~/database/piradio"
+    url = "jdbc:h2:file:./database/piradio"
     user = "pi"
     password = "pi"
 }
