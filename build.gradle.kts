@@ -57,7 +57,7 @@ tasks.withType<Test> {
 }
 
 flyway {
-    url = "jdbc:h2:file:./database/piradio"
+    url = "jdbc:h2:file:../database/piradio"
     user = "pi"
     password = "pi"
 }
