@@ -1,72 +1,59 @@
 package nl.strmark.piradio.util
 
 import mu.KotlinLogging
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
-import java.io.PipedInputStream
-import java.util.concurrent.TimeUnit
+import uk.co.caprica.vlcj.player.base.MediaPlayer
+import uk.co.caprica.vlcj.player.component.AudioPlayerComponent
+import java.lang.Thread.sleep
 
 @Component
 class VlcPlayer {
-    @Value("\${vlc.player.path}")
-    private val vlcPlayerPath: String? = null
-    private var vlcplayerProcess: Process? = null
-    private var vlcplayerOutErr: BufferedReader? = null
-    private val expected: String = "Starting playback..."
-
-    @Throws(IOException::class, InterruptedException::class)
-    fun open(url: String, autoStopMinutes: Int) {
-        when (vlcplayerProcess) {
-            null -> {
-                // start VlcPlayer as an external process
-                val command = "$vlcPlayerPath $url"
-                logger.info { "Starting VlcPlayer process:$command" }
-                vlcplayerProcess = Runtime.getRuntime().exec(command)
-                val readFrom = PipedInputStream(1024 * 1024)
-                vlcplayerOutErr = BufferedReader(InputStreamReader(readFrom))
-                when {
-                    autoStopMinutes > 0 && vlcplayerProcess?.waitFor(autoStopMinutes.toLong(), TimeUnit.MINUTES)
-                        ?.not() == true -> close()
-                }
-            }
-            else -> {
-                close()
-                open(url, autoStopMinutes)
-            }
+    private val audioPlayer: AudioPlayerComponent = object : AudioPlayerComponent() {
+        override fun finished(mediaPlayer: MediaPlayer) {
+            logger.info { "Finished" }
+            mediaPlayer.release()
         }
-        // wait to start playing
-        waitForAnswer(expected)
+
+        override fun error(mediaPlayer: MediaPlayer) {
+            logger.error("Failed to play media")
+            throw RuntimeException()
+        }
+    }
+
+    fun open(url: String, autoStopMinutes: Int) {
+        // Play the MRL specified by the first command-line argument
+        audioPlayer.mediaPlayer().media().play(url)
         logger.info { "Started playing file $url" }
+        if (autoStopMinutes > 0) {
+            // Wait the autoStopMinutes
+            sleep((autoStopMinutes * 60 * 1000).toLong())
+            close()
+            //Thread.currentThread().join((autoStopMinutes*60*1000).toLong())
+        }
     }
 
     fun close() {
-        // stop the vlcplayer
-        if (vlcplayerProcess != null) {
-            vlcplayerProcess?.destroy()
-            vlcplayerProcess = null
+        if (audioPlayer.mediaPlayer().status().isPlaying) {
+            audioPlayer.mediaPlayer().controls().stop()
+            logger.info { "Stopped player" }
         }
     }
 
-    private fun waitForAnswer(expected: String?): String? {
-        var line: String? = null
+    fun getSpeakerOutputVolume(): Int {
+        return audioPlayer.mediaPlayer().audio().volume()
+    }
+
+    fun setSpeakerOutputVolume(value: Int) {
         when {
-            expected != null -> {
-                try {
-                    while (vlcplayerOutErr?.readLine().also { line = it } != null) {
-                        logger.info { "Reading line: $line" }
-                        when {
-                            line?.startsWith(expected) == true -> return line
-                        }
-                    }
-                } catch (e: IOException) {
-                    logger.error { "Exception in Wait for answer: $e.message" }
-                }
+            value < 0 || value > 100 -> {
+                throw IllegalArgumentException(
+                    "VolumeTransfer can only be set to a value from 0 to 100. Given value is illegal: $value"
+                )
+            }
+            else -> {
+                audioPlayer.mediaPlayer().audio().setVolume(value)
             }
         }
-        return line
     }
 
     companion object {
