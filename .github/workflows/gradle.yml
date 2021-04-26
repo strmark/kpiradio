@@ -23,4 +23,4 @@ jobs:
     - name: Grant write permission for database
       run: chmod +w ./database/piradio.*
     - name: Build with Gradle
-      run: ./gradlew clean build
+      run: ./gradlew assemble
