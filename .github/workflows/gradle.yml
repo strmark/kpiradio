@@ -21,6 +21,8 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Grant write permission for database
-      run: ls ./database/piradio.*
+      run: chmod a+w ./database/piradio.*
+    - name: Check permissions
+      run: ls -l ./database/piradio.*
     - name: Build with Gradle
       run: ./gradlew build
