@@ -1,0 +1,27 @@
+## Hibernate Properties
+# Hibernate ddl auto (create, create-drop, validate, update)
+spring:
+  datasource:
+    name: piradio
+    driverClassName: org.h2.Driver
+    initialize: false
+    url: jdbc:h2:file:./database/piradio
+    username: pi
+    password: pi
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        ddl-auto: update
+## QuartzProperties
+  quartz:
+    job-store-type: jdbc
+    properties:
+      org:
+        quartz:
+          threadPool:
+            threadCount: 5
+
+# server listen port
+server:
+  port: 8000
