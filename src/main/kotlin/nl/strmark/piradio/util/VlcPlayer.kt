@@ -45,14 +45,9 @@ class VlcPlayer {
 
     fun setSpeakerOutputVolume(value: Int) {
         when {
-            value < 0 || value > 100 -> {
-                throw IllegalArgumentException(
-                    "VolumeTransfer can only be set to a value from 0 to 100. Given value is illegal: $value"
-                )
-            }
-            else -> {
-                audioPlayer.mediaPlayer().audio().setVolume(value)
-            }
+            value < 0 -> audioPlayer.mediaPlayer().audio().setVolume(0)
+            value > 100 -> audioPlayer.mediaPlayer().audio().setVolume(100)
+            else -> audioPlayer.mediaPlayer().audio().setVolume(value)
         }
     }
 
