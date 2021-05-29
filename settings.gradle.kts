@@ -1,4 +1,4 @@
-rootProject.name = "Pi Radio"
+rootProject.name = "PiRadio"
 
 enableFeaturePreview("VERSION_CATALOGS")
 
