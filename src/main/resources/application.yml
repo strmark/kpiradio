@@ -25,3 +25,18 @@ spring:
 # server listen port
 server:
   port: 8000
+
+springdoc:
+  api-docs:
+    groups:
+      enabled: true
+  swagger-ui:
+    display-request-duration: true
+    groups-order: DESC
+    operationsSorter: method
+    disable-swagger-default-url: true
+    use-root-path: true
+  show-actuator: true
+  group-configs:
+    - group: piradio
+      paths-to-match: /**
