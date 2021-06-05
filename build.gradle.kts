@@ -5,8 +5,9 @@ plugins {
     `version-catalog`
     id("org.springframework.boot") version "2.5.0"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    id("org.flywaydb.flyway") version "7.9.1"
+    id("org.flywaydb.flyway") version "7.9.2"
     id("com.github.ben-manes.versions") version "0.39.0"
+    id("org.sonarqube") version "3.2.0"
     kotlin("jvm") version kotlin_version
     kotlin("plugin.spring") version kotlin_version
     kotlin("plugin.jpa") version kotlin_version
@@ -60,4 +61,12 @@ flyway {
     url = "jdbc:h2:file:./database/piradio"
     user = "pi"
     password = "pi"
+}
+
+sonarqube {
+    properties {
+        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.organization", "strmark")
+        property("sonar.projectKey", "strmark_kpiradio")
+    }
 }

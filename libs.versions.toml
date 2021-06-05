@@ -1,9 +1,9 @@
 [versions]
-flyway = "7.9.1"
+flyway = "7.9.2"
 h2db = "1.4.200"
 jackson = "2.12.3"
 junit = "5.7.1"
-klogging = "2.0.6"
+klogging = "2.0.8"
 kotlinx = "1.2.1"
 swagger = "1.5.9"
 vlcj = "4.7.1"
