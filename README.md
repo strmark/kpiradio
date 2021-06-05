@@ -1,10 +1,10 @@
 # kpiradio
 Kotlin Pi Clock Radio Backend
 
-This part of the project is written with Spring-boot with Kotlin, H2 database, VLC and the Quartz scheduler to provide the backend REST API.
+This part of the project is written with Spring-boot with Kotlin, Swagger, H2 database, VLC and the Quartz scheduler to provide the backend REST API.
 
 ## Installation 
-This installation procedure will works on Raspian.
+This installation procedure will work on Raspian.
 
 ### Pre requisite and libs
 
@@ -13,7 +13,7 @@ sudo apt-get update
 sudo apt-get install git vlc
 ```
 
-Download jdk a from i.e https://adoptopenjdk.net/ and follow the installation instruction within binary tar or zip.
+I've use the jdk 15 in the project so download a jdk a from i.e https://adoptopenjdk.net/.
 
 Clone the project
 ``` bash
@@ -27,7 +27,7 @@ mkdir /home/pi/piradio
 
 Copy the database to /home/pi/piradio/database
 ``` bash
-cd back
+cd kpiradio
 cp database/piradio.db.* /home/pi/piradio/database/
 ```
 
@@ -74,4 +74,4 @@ sudo systemctl start piradio
 sudo systemctl enable piradio
 ```
 
-The backend API should now be accessible on the port 8000 of the server.
+The backend API should now be accessible on the port http://<server>:8000 of the server. Calling the backend endpoint will open the swagger endpoint.
