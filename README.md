@@ -74,4 +74,4 @@ sudo systemctl start piradio
 sudo systemctl enable piradio
 ```
 
-The backend API should now be accessible on the port http://<server>:8000 of the server. Calling the backend endpoint will open the swagger endpoint.
+The backend API should now be accessible on the port http://piradio:8000 of the server. Calling the backend endpoint will open the swagger endpoint.
