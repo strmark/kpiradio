@@ -1,5 +1,5 @@
 [versions]
-flyway = "7.14.0"
+flyway = "7.14.1"
 h2db = "1.4.200"
 jackson = "2.12.4"
 junit = "5.7.1"
