@@ -1,9 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    val kotlin_version = "1.5.30"
+    val kotlin_version = "1.5.31"
     `version-catalog`
-    id("org.springframework.boot") version "2.5.4"
+    id("org.springframework.boot") version "2.5.5"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("org.flywaydb.flyway") version "7.15.0"
     id("com.github.ben-manes.versions") version "0.39.0"
@@ -16,7 +16,7 @@ plugins {
 
 group = "nl.strmark"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_15
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
@@ -42,14 +42,16 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${versions.kotlinx.get()}")
     implementation("uk.co.caprica:vlcj:${versions.vlcj.get()}")
     runtimeOnly("com.h2database:h2")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:${versions.junit.get()}")
+    testImplementation("org.springframework.boot:spring-boot-starter-test"){
+        exclude(group= "org.junit.vintage", module= "junit-vintage-engine")
+    }
+    testCompileOnly("org.junit.jupiter:junit-jupiter-engine:${versions.junit.get()}")
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "15"
+        jvmTarget = "16"
     }
 }
 
