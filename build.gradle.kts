@@ -24,15 +24,15 @@ repositories {
 
 dependencies {
     val versions = kpi.versions
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-jetty")
-    implementation("org.springframework.boot:spring-boot-starter-quartz")
-    implementation("org.springframework.boot:spring-boot-starter-web") {
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:${versions.springboot.get()}")
+    implementation("org.springframework.boot:spring-boot-starter-jetty:${versions.springboot.get()}")
+    implementation("org.springframework.boot:spring-boot-starter-quartz:${versions.springboot.get()}")
+    implementation("org.springframework.boot:spring-boot-starter-web:${versions.springboot.get()}") {
         exclude(module = "spring-boot-starter-tomcat")
     }
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${versions.jackson.get()}")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:${versions.kotlinversion.get()}")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlinversion.get()}")
     implementation("org.springdoc:springdoc-openapi-data-rest:${versions.swagger.get()}")
     implementation("org.springdoc:springdoc-openapi-ui:${versions.swagger.get()}")
     implementation("io.github.microutils:kotlin-logging:${versions.klogging.get()}")
@@ -41,8 +41,8 @@ dependencies {
     implementation("org.flywaydb:flyway-core:${versions.flyway.get()}")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${versions.kotlinx.get()}")
     implementation("uk.co.caprica:vlcj:${versions.vlcj.get()}")
-    runtimeOnly("com.h2database:h2")
-    testImplementation("org.springframework.boot:spring-boot-starter-test"){
+    runtimeOnly("com.h2database:h2:${versions.h2db.get()}")
+    testImplementation("org.springframework.boot:spring-boot-starter-test:${versions.springboot.get()}"){
         exclude(group= "org.junit.vintage", module= "junit-vintage-engine")
     }
     testCompileOnly("org.junit.jupiter:junit-jupiter-engine:${versions.junit.get()}")
