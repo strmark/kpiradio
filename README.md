@@ -13,7 +13,7 @@ sudo apt-get update
 sudo apt-get install git vlc
 ```
 
-I've used the jdk 15 in the project so download a jdk from i.e https://adoptopenjdk.net/.
+I've used the jdk 17 in the project so download a jdk from i.e https://adoptium.net/.
 
 Clone the project
 ``` bash
