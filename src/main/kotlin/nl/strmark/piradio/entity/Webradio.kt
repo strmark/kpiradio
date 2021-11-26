@@ -9,7 +9,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "webradios")
-data class Webradio (
+class Webradio (
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
