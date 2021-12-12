@@ -5,7 +5,7 @@ plugins {
     `version-catalog`
     id("org.springframework.boot") version "2.6.1"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    id("org.flywaydb.flyway") version "8.2.0"
+    id("org.flywaydb.flyway") version "8.2.1"
     id("com.github.ben-manes.versions") version "0.39.0"
     id("org.sonarqube") version "3.3"
     kotlin("jvm") version kotlin_version
@@ -41,7 +41,7 @@ dependencies {
     implementation("org.flywaydb:flyway-core:${versions.flyway.get()}")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${versions.kotlinx.get()}")
     implementation("uk.co.caprica:vlcj:${versions.vlcj.get()}")
-    runtimeOnly("com.h2database:h2:${versions.h2db.get()}")
+    implementation("com.h2database:h2:${versions.h2db.get()}")
     testImplementation("org.springframework.boot:spring-boot-starter-test:${versions.springboot.get()}"){
         exclude(group= "org.junit.vintage", module= "junit-vintage-engine")
     }
