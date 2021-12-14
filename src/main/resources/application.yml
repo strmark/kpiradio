@@ -3,17 +3,19 @@
 spring:
   datasource:
     name: piradio
-    driverClassName: org.h2.Driver
-    initialize: false
+    driver-class-name: org.h2.Driver
     url: jdbc:h2:file:./database/piradio
     username: pi
     password: pi
   jpa:
+    database-platform: H2
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
-        ddl-auto: update
-## QuartzProperties
+        ddl-auto: create
+    show-sql: true
+  # defer-datasource-initialization: false
+  ## QuartzProperties
   quartz:
     job-store-type: jdbc
     properties:
@@ -21,8 +23,12 @@ spring:
         quartz:
           threadPool:
             threadCount: 5
+  flyway:
+    locations: classpath:db/migration/
+    baselineOnMigrate: true
+    schemas: PUBLIC
+    enabled: true
 
-# server listen port
 server:
   port: 8000
 
