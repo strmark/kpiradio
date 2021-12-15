@@ -3,16 +3,15 @@ package nl.strmark.piradio.entity
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
 @Table(name = "webradios")
-class Webradio (
+class Webradio(
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     var id: Int,
 
     @Column(length = 50, nullable = false)

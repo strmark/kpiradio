@@ -3,16 +3,15 @@ package nl.strmark.piradio.entity
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
 @Table(name = "alarms")
-class Alarm (
+class Alarm(
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     var id: Int,
 
     @Column(length = 50, nullable = false, unique = false)
@@ -25,7 +24,9 @@ class Alarm (
     var friday: Boolean,
     var saturday: Boolean,
     var sunday: Boolean,
+    @Column(name = "hours")
     var hour: Int,
+    @Column(name = "minutes")
     var minute: Int,
     var autoStopMinutes: Int,
     var isActive: Boolean,

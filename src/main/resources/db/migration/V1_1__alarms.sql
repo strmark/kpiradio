@@ -1,24 +1,20 @@
-DROP TABLE IF EXISTS ALARMS;
-DROP SEQUENCE IF EXISTS ALARMS_SEQ;
-
-CREATE SEQUENCE ALARMS_SEQ START WITH 1 INCREMENT BY 1;
-
-CREATE TABLE ALARMS (
-	ID BIGINT DEFAULT NEXT VALUE FOR ALARMS_SEQ NOT NULL AUTO_INCREMENT,
-	NAME VARCHAR(255),
-    MONDAY BOOLEAN NOT NULL,
-    TUESDAY BOOLEAN NOT NULL,
-    WEDNESDAY BOOLEAN NOT NULL,
-	THURSDAY BOOLEAN NOT NULL,
-    FRIDAY BOOLEAN NOT NULL,
-    SATURDAY BOOLEAN NOT NULL,
-    SUNDAY BOOLEAN NOT NULL,
-    "HOUR" INTEGER NOT NULL,
-    "MINUTE" INTEGER NOT NULL,
-    AUTO_STOP_MINUTES INTEGER NOT NULL,
-    IS_ACTIVE BOOLEAN NOT NULL,
-	WEBRADIO BIGINT NOT NULL,
-	CONSTRAINT ALARMS_PK PRIMARY KEY (ID)
+create table alarms
+(
+    id                bigint  not null,
+    name              varchar(255),
+    monday            boolean not null,
+    tuesday           boolean not null,
+    wednesday         boolean not null,
+    thursday          boolean not null,
+    friday            boolean not null,
+    saturday          boolean not null,
+    sunday            boolean not null,
+    hours             integer not null,
+    minutes           integer not null,
+    auto_stop_minutes integer not null,
+    is_active         boolean not null,
+    webradio          bigint  not null,
+    constraint alarms_pk primary key (id)
 );
 
-CREATE UNIQUE INDEX ALARMS_PK_IND ON ALARMS (ID);
+create unique index alarms_pk_ind on alarms (id);

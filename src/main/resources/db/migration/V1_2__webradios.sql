@@ -1,14 +1,10 @@
-DROP TABLE IF EXISTS WEBRADIOS;
-DROP SEQUENCE IF EXISTS WEBRADIOS_SEQ;
-
-CREATE SEQUENCE WEBRADIOS_SEQ START WITH 1 INCREMENT BY 1;
-
-CREATE TABLE WEBRADIOS (
-	ID BIGINT DEFAULT NEXT VALUE FOR WEBRADIOS_SEQ NOT NULL AUTO_INCREMENT,
-	NAME VARCHAR(255),
-	URL VARCHAR(255),
-	IS_DEFAULT BOOLEAN NOT NULL,
-	CONSTRAINT WEBRADIOS_PK PRIMARY KEY (ID)
+create table webradios
+(
+    id         bigint  not null,
+    name       varchar(255),
+    url        varchar(255),
+    is_default boolean not null,
+    constraint webradios_pk primary key (id)
 );
 
-CREATE UNIQUE INDEX WEBRADIOS_PK_IND ON WEBRADIOS (ID);
+create unique index webradios_pk_ind on webradios (id);
