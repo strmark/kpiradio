@@ -1,17 +1,17 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    val kotlin_version = "1.6.10"
+    val kotlinVersion = "1.6.10"
     `version-catalog`
     id("org.springframework.boot") version "2.6.2"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    id("org.flywaydb.flyway") version "8.4.0"
+    id("org.flywaydb.flyway") version "8.4.1"
     id("com.github.ben-manes.versions") version "0.41.0"
     id("org.sonarqube") version "3.3"
-    kotlin("jvm") version kotlin_version
-    kotlin("plugin.spring") version kotlin_version
-    kotlin("plugin.jpa") version kotlin_version
-    kotlin("plugin.serialization") version kotlin_version
+    kotlin("jvm") version kotlinVersion
+    kotlin("plugin.spring") version kotlinVersion
+    kotlin("plugin.jpa") version kotlinVersion
+    kotlin("plugin.serialization") version kotlinVersion
 }
 
 group = "nl.strmark"
