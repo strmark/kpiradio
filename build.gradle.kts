@@ -23,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    val versions = kpi.versions
+    val versions = kpiLibs.versions
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:${versions.springboot.get()}")
     implementation("org.springframework.boot:spring-boot-starter-jetty:${versions.springboot.get()}")
     implementation("org.springframework.boot:spring-boot-starter-quartz:${versions.springboot.get()}")
@@ -57,6 +57,11 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+
+tasks.withType<Wrapper> {
+    gradleVersion = "7.4"
 }
 
 flyway {

@@ -1,10 +1,8 @@
 rootProject.name = "PiRadio"
 
-enableFeaturePreview("VERSION_CATALOGS")
-
 dependencyResolutionManagement {
     versionCatalogs {
-        create("kpi") {
+        create("kpiLibs") {
             from(files("libs.versions.toml"))
         }
     }
