@@ -5,7 +5,7 @@ plugins {
     `version-catalog`
     id("org.springframework.boot") version "2.6.4"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    id("org.flywaydb.flyway") version "8.5.2"
+    id("org.flywaydb.flyway") version "8.5.4"
     id("com.github.ben-manes.versions") version "0.42.0"
     id("org.sonarqube") version "3.3"
     kotlin("jvm") version kotlinVersion
@@ -61,7 +61,7 @@ tasks.withType<Test> {
 
 
 tasks.withType<Wrapper> {
-    gradleVersion = "7.4"
+    gradleVersion = "7.4.1"
 }
 
 flyway {
