@@ -8,16 +8,8 @@ import java.lang.Thread.sleep
 
 @Component
 class VlcPlayer {
-    private val audioPlayer: AudioPlayerComponent = object : AudioPlayerComponent() {
-        override fun finished(mediaPlayer: MediaPlayer) {
-            logger.info { "Finished" }
-            mediaPlayer.release()
-        }
-
-        override fun error(mediaPlayer: MediaPlayer) {
-            logger.error("Failed to play media")
-            throw RuntimeException()
-        }
+    companion object {
+        private val logger = KotlinLogging.logger {}
     }
 
     fun open(url: String, autoStopMinutes: Int) {
@@ -28,7 +20,6 @@ class VlcPlayer {
             // Wait the autoStopMinutes
             sleep((autoStopMinutes * 60 * 1000).toLong())
             close()
-            //Thread.currentThread().join((autoStopMinutes*60*1000).toLong())
         }
     }
 
@@ -51,7 +42,15 @@ class VlcPlayer {
         }
     }
 
-    companion object {
-        private val logger = KotlinLogging.logger {}
+    private val audioPlayer: AudioPlayerComponent = object : AudioPlayerComponent() {
+        override fun finished(mediaPlayer: MediaPlayer) {
+            logger.info { "Finished" }
+            mediaPlayer.release()
+        }
+
+        override fun error(mediaPlayer: MediaPlayer) {
+            logger.error("Failed to play media")
+            throw RuntimeException()
+        }
     }
 }

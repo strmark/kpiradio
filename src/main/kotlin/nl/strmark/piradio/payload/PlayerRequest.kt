@@ -1,7 +1,7 @@
 package nl.strmark.piradio.payload
 
-data class PlayerRequest (
+data class PlayerRequest(
     var status: String,
-    var webradio: Int,
+    var webRadio: Int,
     var autoStopMinutes: Int
 )

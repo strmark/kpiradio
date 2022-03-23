@@ -8,7 +8,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "webradios")
-class Webradio(
+class WebRadio(
 
     @Id
     @GeneratedValue

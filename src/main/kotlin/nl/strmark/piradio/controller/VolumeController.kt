@@ -13,11 +13,15 @@ import org.springframework.web.bind.annotation.RestController
 
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 @RestController
-class VolumeController(private val vlcplayer: VlcPlayer) {
+class VolumeController(private val vlcPlayer: VlcPlayer) {
+
+    companion object {
+        private val logger = KotlinLogging.logger {}
+    }
 
     @GetMapping(path = ["/volume"], produces = ["application/json"])
     fun getVolume(): JsonElement {
-        var volume = vlcplayer.getSpeakerOutputVolume()
+        var volume = vlcPlayer.getSpeakerOutputVolume()
         volume = volume.coerceAtLeast(0)
         volume = volume.coerceAtMost(100)
         logger.info { "Get Volume $volume" }
@@ -28,11 +32,7 @@ class VolumeController(private val vlcplayer: VlcPlayer) {
     fun setVolume(@RequestBody volume: VolumeRequest): JsonElement {
         val vol = volume.volume.toInt()
         logger.info { "Set Volume $vol" }
-        vlcplayer.setSpeakerOutputVolume(vol)
+        vlcPlayer.setSpeakerOutputVolume(vol)
         return Json.parseToJsonElement("""{"volume":"${volume.volume}"}""")
-    }
-
-    companion object {
-        private val logger = KotlinLogging.logger {}
     }
 }

@@ -13,7 +13,7 @@ create table alarms
     minutes           integer not null,
     auto_stop_minutes integer not null,
     is_active         boolean not null,
-    webradio          bigint  not null,
+    web_radio         bigint  not null,
     constraint alarms_pk primary key (id)
 );
 

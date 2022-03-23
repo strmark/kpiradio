@@ -1,5 +1,5 @@
 package nl.strmark.piradio.payload
 
-data class VolumeRequest (
+data class VolumeRequest(
     var volume: String
 )

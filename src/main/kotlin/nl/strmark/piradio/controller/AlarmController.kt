@@ -2,12 +2,12 @@ package nl.strmark.piradio.controller
 
 import mu.KotlinLogging
 import nl.strmark.piradio.entity.Alarm
-import nl.strmark.piradio.entity.Webradio
+import nl.strmark.piradio.entity.WebRadio
 import nl.strmark.piradio.exception.ResourceNotFoundException
 import nl.strmark.piradio.job.AlarmJob
 import nl.strmark.piradio.payload.ScheduleAlarmResponse
 import nl.strmark.piradio.repository.AlarmRepository
-import nl.strmark.piradio.repository.WebradioRepository
+import nl.strmark.piradio.repository.WebRadioRepository
 import org.quartz.CronScheduleBuilder
 import org.quartz.JobBuilder
 import org.quartz.JobDataMap
@@ -33,12 +33,18 @@ import java.util.Date
 @RestController
 class AlarmController(
     private val alarmRepository: AlarmRepository,
-    private val webradioRepository: WebradioRepository,
+    private val webRadioRepository: WebRadioRepository,
     private val scheduler: Scheduler
 ) {
+    companion object {
+        private val logger = KotlinLogging.logger {}
+        private const val ALARM = "Alarm"
+        private const val ALARM_JOBS = "Alarm-jobs"
+        private const val PI_RADIO = "PiRadio_"
+    }
 
     @GetMapping("/alarms")
-    fun findAll() = alarmRepository.findAll()
+    fun findAll(): MutableList<Alarm?> = alarmRepository.findAll()
 
     @PostMapping(path = ["/alarms"])
     fun saveAlarm(@RequestBody alarm: Alarm): Alarm? {
@@ -63,7 +69,7 @@ class AlarmController(
         return when {
             alarm != null -> {
                 scheduleAlarm(
-                    alarmDetails.webradio,
+                    alarmDetails.webRadio,
                     alarmDetails.isActive,
                     alarmDetails.autoStopMinutes,
                     getCronSchedule(alarmDetails)
@@ -74,13 +80,12 @@ class AlarmController(
         }
     }
 
-
     @DeleteMapping(path = ["/alarms/{id}"])
     fun deleteAlarm(@PathVariable(value = "id") alarmId: Int): ResponseEntity<Long> {
         val alarm = alarmRepository.findById(alarmId)
             .orElseThrow { ResourceNotFoundException(ALARM, "id", alarmId) }
         try {
-            val jobKey = JobKey("PIRADIO" + alarm?.webradio, ALARM_JOBS)
+            val jobKey = JobKey("PI_RADIO" + alarm?.webRadio, ALARM_JOBS)
 
             when {
                 scheduler.checkExists(jobKey) -> {
@@ -100,31 +105,31 @@ class AlarmController(
         }
     }
 
-    private fun scheduleAlarm(webradioId: Int, isActive: Boolean, autoStopMinutes: Int, cronSchedule: String) {
+    private fun scheduleAlarm(webRadioId: Int, isActive: Boolean, autoStopMinutes: Int, cronSchedule: String) {
         try {
-            val webradioOptional = webradioRepository.findById(webradioId)
-            var webradio: Webradio? = null
+            val webRadioOptional = webRadioRepository.findById(webRadioId)
+            var webRadio: WebRadio? = null
             when {
-                webradioOptional.isPresent -> {
-                    webradio = webradioOptional.get()
+                webRadioOptional.isPresent -> {
+                    webRadio = webRadioOptional.get()
                 }
             }
-            val jobkey = JobKey(PIRADIO + webradioId, ALARM_JOBS)
+            val jobKey = JobKey(PI_RADIO + webRadioId, ALARM_JOBS)
             when {
-                scheduler.checkExists(jobkey) -> {
+                scheduler.checkExists(jobKey) -> {
                     logger.info { "Already exists" }
-                    scheduler.deleteJob(jobkey)
+                    scheduler.deleteJob(jobKey)
                 }
             }
             when {
                 isActive -> {
-                    //JobDetail jobDetail = buildJobDetail(alarmDetails.getName()+'_'+alarmDetails.getWebradio()
+                    // JobDetail jobDetail = buildJobDetail(alarmDetails.getName()+'_'+alarmDetails.getWebRadio()
                     val jobDetail = buildJobDetail(
-                        PIRADIO + webradioId,
-                        webradioId,
+                        PI_RADIO + webRadioId,
+                        webRadioId,
                         autoStopMinutes,
                         when {
-                            webradio != null -> webradio.url
+                            webRadio != null -> webRadio.url
                             else -> "dummy"
                         }
                     )
@@ -158,16 +163,18 @@ class AlarmController(
         alarm.sunday = alarmDetails.sunday
         alarm.autoStopMinutes = alarmDetails.autoStopMinutes
         alarm.isActive = alarmDetails.isActive
-        alarm.webradio = alarmDetails.webradio
+        alarm.webRadio = alarmDetails.webRadio
         return alarmRepository.save(alarm)
     }
 
     private fun getCronSchedule(alarmDetails: Alarm?): String {
-        //0 45 6 ? * MON,TUE,WED,THU,FRI *
-        val cronSchedule = ("0 "
-                + (alarmDetails?.minute ?: 0) + " "
-                + (alarmDetails?.hour ?: 0)
-                + " ? * ")
+        // 0 45 6 ? * MON,TUE,WED,THU,FRI *
+        val cronSchedule = (
+            "0 " +
+                (alarmDetails?.minute ?: 0) + " " +
+                (alarmDetails?.hour ?: 0) +
+                " ? * "
+            )
         var cronDays = ""
         when {
             alarmDetails != null -> {
@@ -195,9 +202,9 @@ class AlarmController(
         }
     }
 
-    private fun buildJobDetail(alarmName: String, webradio: Int, autoStopMinutes: Int, url: String?): JobDetail {
+    private fun buildJobDetail(alarmName: String, webRadio: Int, autoStopMinutes: Int, url: String?): JobDetail {
         val jobDataMap = JobDataMap()
-        jobDataMap["webradio"] = webradio
+        jobDataMap["webRadio"] = webRadio
         jobDataMap["autoStopMinutes"] = autoStopMinutes
         jobDataMap["url"] = url
         return JobBuilder.newJob(AlarmJob::class.java)
@@ -216,12 +223,5 @@ class AlarmController(
             .startAt(Date.from(startAt.toInstant()))
             .withSchedule(CronScheduleBuilder.cronSchedule(cronSchedule))
             .build()
-    }
-
-    companion object {
-        private val logger = KotlinLogging.logger {}
-        private const val ALARM = "Alarm"
-        private const val ALARM_JOBS = "Alarm-jobs"
-        private const val PIRADIO = "Piradio_"
     }
 }

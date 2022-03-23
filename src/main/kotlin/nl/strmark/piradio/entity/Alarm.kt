@@ -30,5 +30,5 @@ class Alarm(
     var minute: Int,
     var autoStopMinutes: Int,
     var isActive: Boolean,
-    var webradio: Int
+    var webRadio: Int
 )
