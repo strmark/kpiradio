@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     val kotlinVersion = "1.6.10"
     `version-catalog`
-    id("org.springframework.boot") version "2.6.4"
+    id("org.springframework.boot") version "2.6.5"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("org.flywaydb.flyway") version "8.5.4"
     id("com.github.ben-manes.versions") version "0.42.0"
@@ -42,9 +42,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${versions.kotlinx.get()}")
     implementation("uk.co.caprica:vlcj:${versions.vlcj.get()}")
     implementation("com.h2database:h2:${versions.h2db.get()}")
-    testImplementation("org.springframework.boot:spring-boot-starter-test:${versions.springboot.get()}"){
-        exclude(group= "org.junit.vintage", module= "junit-vintage-engine")
+    testImplementation("org.springframework.boot:spring-boot-starter-test:${versions.springboot.get()}") {
+        exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
+    testCompileOnly("org.junit.jupiter:junit-jupiter-api:${versions.junit.get()}")
     testCompileOnly("org.junit.jupiter:junit-jupiter-engine:${versions.junit.get()}")
 }
 
@@ -58,7 +59,6 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
-
 
 tasks.withType<Wrapper> {
     gradleVersion = "7.4.1"
