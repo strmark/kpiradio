@@ -22,8 +22,10 @@ class VolumeController(private val vlcPlayer: VlcPlayer) {
     @GetMapping(path = ["/volume"], produces = ["application/json"])
     fun getVolume(): JsonElement {
         var volume = vlcPlayer.getSpeakerOutputVolume()
-        volume = volume.coerceAtLeast(0)
-        volume = volume.coerceAtMost(100)
+        volume = when (volume) {
+            -1 -> 100
+            else -> volume.coerceAtLeast(0).coerceAtMost(100)
+        }
         logger.info { "Get Volume $volume" }
         return Json.parseToJsonElement("""{"volume":"$volume"}""")
     }
