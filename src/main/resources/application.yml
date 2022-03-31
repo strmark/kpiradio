@@ -46,3 +46,6 @@ springdoc:
   group-configs:
     - group: piradio
       paths-to-match: /**
+
+piradio:
+  volume: 80

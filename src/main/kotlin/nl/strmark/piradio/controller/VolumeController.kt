@@ -4,7 +4,9 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import mu.KotlinLogging
 import nl.strmark.piradio.payload.VolumeRequest
+import nl.strmark.piradio.properties.PiRadioProperties
 import nl.strmark.piradio.util.VlcPlayer
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -15,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class VolumeController(private val vlcPlayer: VlcPlayer) {
 
+    @Autowired
+    private lateinit var piRadioProperties: PiRadioProperties
+
     companion object {
         private val logger = KotlinLogging.logger {}
     }
@@ -23,7 +28,7 @@ class VolumeController(private val vlcPlayer: VlcPlayer) {
     fun getVolume(): JsonElement {
         var volume = vlcPlayer.getSpeakerOutputVolume()
         volume = when (volume) {
-            -1 -> 100
+            -1 -> piRadioProperties.volume ?: 100
             else -> volume.coerceAtLeast(0).coerceAtMost(100)
         }
         logger.info { "Get Volume $volume" }
