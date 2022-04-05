@@ -12,6 +12,7 @@ plugins {
     kotlin("plugin.spring") version kotlinVersion
     kotlin("plugin.jpa") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
+    kotlin("kapt") version kotlinVersion
 }
 
 group = "nl.strmark"
@@ -31,7 +32,6 @@ dependencies {
         exclude(module = "spring-boot-starter-tomcat")
     }
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${versions.jackson.get()}")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlinversion.get()}")
     implementation("org.springdoc:springdoc-openapi-data-rest:${versions.swagger.get()}")
     implementation("org.springdoc:springdoc-openapi-ui:${versions.swagger.get()}")
     implementation("io.github.microutils:kotlin-logging:${versions.klogging.get()}")
