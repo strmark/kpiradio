@@ -2,6 +2,7 @@ package nl.strmark.piradio.util
 
 import mu.KotlinLogging
 import org.springframework.stereotype.Component
+import uk.co.caprica.vlcj.player.base.AudioDevice
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.component.AudioPlayerComponent
 import java.lang.Thread.sleep
@@ -14,7 +15,17 @@ class VlcPlayer {
 
     fun open(url: String, autoStopMinutes: Int) {
         // Play the MRL specified by the first command-line argument
+        // audioPlayer.mediaPlayer().audio().outputDevices().size
+        audioPlayer.mediaPlayer().audio().outputDevices()[0] =
+            AudioDevice(audioPlayer.mediaPlayer().audio().outputDevices()[0].deviceId, "default")
+
         audioPlayer.mediaPlayer().media().play(url)
+        // audioPlayer.mediaPlayer().media().play(url)
+        logger.info {
+            "deviceId ${
+            audioPlayer.mediaPlayer().audio().outputDevices()[0].deviceId
+            }, longname ${audioPlayer.mediaPlayer().audio().outputDevices()[0].longName}"
+        }
         logger.info { "Started playing file $url" }
         if (autoStopMinutes > 0) {
             // Wait the autoStopMinutes
