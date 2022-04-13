@@ -38,7 +38,7 @@ class PlayerController(private val webRadioRepository: WebRadioRepository, priva
     fun startPlayer(url: String?, autoStopMinutes: Int?): JsonElement {
         try {
             // no timer so minutes 0
-            if (url != null && autoStopMinutes != null) vlcPlayer.open(url, autoStopMinutes)
+            if (url != null && autoStopMinutes != null) vlcPlayer.open(url, autoStopMinutes.toLong())
         } catch (exception: Exception) {
             logger.error { "$exception.message, $exception" }
         }

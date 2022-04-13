@@ -48,4 +48,8 @@ springdoc:
       paths-to-match: /**
 
 piradio:
-  volume: 80
+  volume: 75f
+  device: "Master"
+  vlc:
+    player:
+      path: "/usr/bin/cvlc"
