@@ -5,14 +5,13 @@ plugins {
     `version-catalog`
     id("org.springframework.boot") version "2.6.6"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    id("org.flywaydb.flyway") version "8.5.7"
+    id("org.flywaydb.flyway") version "8.5.8"
     id("com.github.ben-manes.versions") version "0.42.0"
     id("org.sonarqube") version "3.3"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     kotlin("plugin.jpa") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
-    kotlin("kapt") version kotlinVersion
 }
 
 group = "nl.strmark"
@@ -39,7 +38,6 @@ dependencies {
     implementation("com.h2database:h2:${versions.h2db.get()}")
     implementation("org.flywaydb:flyway-core:${versions.flyway.get()}")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${versions.kotlinx.get()}")
-    implementation("uk.co.caprica:vlcj:${versions.vlcj.get()}")
     implementation("com.h2database:h2:${versions.h2db.get()}")
     testImplementation("org.springframework.boot:spring-boot-starter-test:${versions.springboot.get()}") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
