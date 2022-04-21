@@ -1,56 +1,47 @@
 package nl.strmark.piradio.util
 
 import mu.KotlinLogging
+import nl.strmark.piradio.properties.PiRadioProperties
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import uk.co.caprica.vlcj.player.base.MediaPlayer
-import uk.co.caprica.vlcj.player.component.AudioPlayerComponent
-import java.lang.Thread.sleep
+import java.util.concurrent.TimeUnit
 
 @Component
 class VlcPlayer {
+
     companion object {
         private val logger = KotlinLogging.logger {}
     }
 
-    fun open(url: String, autoStopMinutes: Int) {
-        // Play the MRL specified by the first command-line argument
-        audioPlayer.mediaPlayer().media().play(url)
-        logger.info { "Started playing file $url" }
-        if (autoStopMinutes > 0) {
-            // Wait the autoStopMinutes
-            sleep((autoStopMinutes * 60 * 1000).toLong())
-            close()
+    @Autowired
+    private lateinit var piRadioProperties: PiRadioProperties
+
+    private var vlcPlayerProcess: Process? = null
+
+    fun open(url: String, autoStopMinutes: Long) {
+        when (vlcPlayerProcess != null) {
+            true -> {
+                stopVlcPlayer()
+                open(url, autoStopMinutes)
+            }
+            else -> {
+                // start VlcPlayer as an external process
+                val command = "${piRadioProperties.vlc.player.path} $url"
+                logger.info("Starting VlcPlayer process:{}", command)
+                vlcPlayerProcess = Runtime.getRuntime().exec(command)
+                when {
+                    autoStopMinutes > 0 && vlcPlayerProcess?.waitFor(
+                        autoStopMinutes,
+                        TimeUnit.MINUTES
+                    ) == false -> stopVlcPlayer()
+                }
+            }
         }
+        logger.info("Started playing $url")
     }
 
-    fun close() {
-        if (audioPlayer.mediaPlayer().status().isPlaying) {
-            audioPlayer.mediaPlayer().controls().stop()
-            logger.info { "Stopped player" }
-        }
-    }
-
-    fun getSpeakerOutputVolume(): Int {
-        return audioPlayer.mediaPlayer().audio().volume()
-    }
-
-    fun setSpeakerOutputVolume(value: Int) {
-        when {
-            value < 0 -> audioPlayer.mediaPlayer().audio().setVolume(0)
-            value > 100 -> audioPlayer.mediaPlayer().audio().setVolume(100)
-            else -> audioPlayer.mediaPlayer().audio().setVolume(value)
-        }
-    }
-
-    private val audioPlayer: AudioPlayerComponent = object : AudioPlayerComponent() {
-        override fun finished(mediaPlayer: MediaPlayer) {
-            logger.info { "Finished" }
-            mediaPlayer.release()
-        }
-
-        override fun error(mediaPlayer: MediaPlayer) {
-            logger.error("Failed to play media")
-            throw RuntimeException()
-        }
+    fun stopVlcPlayer() {
+        vlcPlayerProcess?.destroy()
+        vlcPlayerProcess = null
     }
 }

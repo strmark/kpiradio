@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-import java.util.Objects
-import java.util.stream.Collectors
 
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 @RestController
@@ -38,7 +36,7 @@ class PlayerController(private val webRadioRepository: WebRadioRepository, priva
     fun startPlayer(url: String?, autoStopMinutes: Int?): JsonElement {
         try {
             // no timer so minutes 0
-            if (url != null && autoStopMinutes != null) vlcPlayer.open(url, autoStopMinutes)
+            if (url != null && autoStopMinutes != null) vlcPlayer.open(url, autoStopMinutes.toLong())
         } catch (exception: Exception) {
             logger.error { "$exception.message, $exception" }
         }
@@ -48,7 +46,7 @@ class PlayerController(private val webRadioRepository: WebRadioRepository, priva
     fun stopPlayer(): JsonElement {
         // stop playing and return status off
         try {
-            vlcPlayer.close()
+            vlcPlayer.stopVlcPlayer()
         } catch (exception: Exception) {
             logger.error { "$exception.message, $exception" }
         }
@@ -63,15 +61,13 @@ class PlayerController(private val webRadioRepository: WebRadioRepository, priva
             else -> {
                 webRadioRepository
                     .findAll()
-                    .stream()
-                    .map<String?> { webRadio: WebRadio? ->
+                    .map { webRadio: WebRadio? ->
                         when {
                             webRadio != null -> webRadioId?.let { setDefaultAndSave(it, webRadio) }
                             else -> null
                         }
                     }
-                    .filter { obj: String? -> Objects.nonNull(obj) }
-                    .collect(Collectors.joining())
+                    .joinToString()
             }
         }
         return startPlayer(url, autoStopMinutes)
@@ -102,11 +98,6 @@ class PlayerController(private val webRadioRepository: WebRadioRepository, priva
     }
 
     private fun getWebRadioUrl(webRadioList: List<WebRadio>): String? {
-        return webRadioList
-            .stream()
-            .filter(WebRadio::isDefault)
-            .map(WebRadio::url)
-            .findAny()
-            .orElse(null)
+        return webRadioList.firstOrNull(WebRadio::isDefault)?.url
     }
 }
