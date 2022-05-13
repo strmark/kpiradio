@@ -5,7 +5,7 @@ plugins {
     `version-catalog`
     id("org.springframework.boot") version "2.6.7"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    id("org.flywaydb.flyway") version "8.5.9"
+    id("org.flywaydb.flyway") version "8.5.10"
     id("com.github.ben-manes.versions") version "0.42.0"
     id("org.sonarqube") version "3.3"
     kotlin("jvm") version kotlinVersion
@@ -30,6 +30,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web:${versions.springboot.get()}") {
         exclude(module = "spring-boot-starter-tomcat")
     }
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlinversion.get()}")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${versions.jackson.get()}")
     implementation("org.springdoc:springdoc-openapi-data-rest:${versions.swagger.get()}")
     implementation("org.springdoc:springdoc-openapi-ui:${versions.swagger.get()}")
