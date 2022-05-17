@@ -1,7 +1,7 @@
 [versions]
-flyway = "8.5.10"
+flyway = "8.5.11"
 h2db = "2.1.212"
-jackson = "2.13.2"
+jackson = "2.13.3"
 junit = "5.8.2"
 klogging = "2.1.21"
 kotlinx = "1.3.3"
