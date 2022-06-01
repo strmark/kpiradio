@@ -5,7 +5,7 @@ plugins {
     `version-catalog`
     id("org.springframework.boot") version "2.7.0"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    id("org.flywaydb.flyway") version "8.5.11"
+    id("org.flywaydb.flyway") version "8.5.12"
     id("com.github.ben-manes.versions") version "0.42.0"
     id("org.sonarqube") version "3.3"
     kotlin("jvm") version kotlinVersion
