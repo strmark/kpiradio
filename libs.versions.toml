@@ -1,6 +1,6 @@
 [versions]
 flyway = "8.5.12"
-h2db = "2.1.212"
+h2db = "2.1.214"
 jackson = "2.13.3"
 junit = "5.8.2"
 klogging = "2.1.23"
