@@ -4,7 +4,7 @@ plugins {
     val kotlinVersion = "1.7.10"
     `version-catalog`
     id("org.springframework.boot") version "2.7.2"
-    id("io.spring.dependency-management") version "1.0.12.RELEASE"
+    id("io.spring.dependency-management") version "1.0.13.RELEASE"
     id("org.flywaydb.flyway") version "8.5.13"
     id("com.github.ben-manes.versions") version "0.42.0"
     id("org.sonarqube") version "3.4.0.2513"
@@ -58,13 +58,14 @@ tasks.withType<Test> {
 }
 
 tasks.withType<Wrapper> {
-    gradleVersion = "7.5"
+    gradleVersion = "7.5.1"
 }
 
 flyway {
     url = "jdbc:h2:file:./database/piradio"
     user = "pi"
     password = "pi"
+    ignoreMigrationPatterns = listOf("repeatable:missing").toTypedArray()
 }
 
 sonarqube {
