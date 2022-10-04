@@ -8,33 +8,18 @@ import nl.strmark.piradio.job.AlarmJob
 import nl.strmark.piradio.payload.ScheduleAlarmResponse
 import nl.strmark.piradio.repository.AlarmRepository
 import nl.strmark.piradio.repository.WebRadioRepository
-import org.quartz.CronScheduleBuilder
-import org.quartz.JobBuilder
-import org.quartz.JobDataMap
-import org.quartz.JobDetail
-import org.quartz.JobKey
-import org.quartz.Scheduler
-import org.quartz.SchedulerException
-import org.quartz.Trigger
-import org.quartz.TriggerBuilder
+import org.quartz.*
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.time.ZonedDateTime
-import java.util.Date
+import java.util.*
 
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 @RestController
 class AlarmController(
-    private val alarmRepository: AlarmRepository,
-    private val webRadioRepository: WebRadioRepository,
-    private val scheduler: Scheduler
+        private val alarmRepository: AlarmRepository,
+        private val webRadioRepository: WebRadioRepository,
+        private val scheduler: Scheduler
 ) {
     companion object {
         private val logger = KotlinLogging.logger {}
@@ -47,32 +32,27 @@ class AlarmController(
     fun findAll(): MutableList<Alarm?> = alarmRepository.findAll()
 
     @PostMapping(path = ["/alarms"])
-    fun saveAlarm(@RequestBody alarm: Alarm): Alarm? {
-        return alarmRepository.save(alarm)
-    }
+    fun saveAlarm(@RequestBody alarm: Alarm): Alarm? = alarmRepository.save(alarm)
 
     @GetMapping(path = ["/alarms/{id}"])
-    fun findById(@PathVariable(value = "id") alarmId: Int): Alarm? {
-        return alarmRepository.findById(alarmId)
-            .orElseThrow { ResourceNotFoundException(ALARM, "id", alarmId) }
-    }
+    fun findById(@PathVariable(value = "id") alarmId: Int): Alarm? = alarmRepository.findById(alarmId).orElseThrow { ResourceNotFoundException(ALARM, "id", alarmId) }
 
     @PutMapping(path = ["/alarms/{id}"])
     fun updateAlarm(
-        @PathVariable(value = "id") alarmId: Int,
-        @RequestBody alarmDetails: Alarm
+            @PathVariable(value = "id") alarmId: Int,
+            @RequestBody alarmDetails: Alarm
     ): Alarm? {
         assert(alarmDetails.id == alarmId)
         val alarm: Alarm? = alarmRepository.findById(alarmId)
-            .orElseThrow { ResourceNotFoundException(ALARM, "id", alarmId) }
+                .orElseThrow { ResourceNotFoundException(ALARM, "id", alarmId) }
 
         return when {
             alarm != null -> {
                 scheduleAlarm(
-                    alarmDetails.webRadio,
-                    alarmDetails.isActive,
-                    alarmDetails.autoStopMinutes,
-                    getCronSchedule(alarmDetails)
+                        alarmDetails.webRadio,
+                        alarmDetails.isActive,
+                        alarmDetails.autoStopMinutes,
+                        getCronSchedule(alarmDetails)
                 )
                 saveAlarm(alarm, alarmDetails)
             }
@@ -83,7 +63,7 @@ class AlarmController(
     @DeleteMapping(path = ["/alarms/{id}"])
     fun deleteAlarm(@PathVariable(value = "id") alarmId: Int): ResponseEntity<Long> {
         val alarm = alarmRepository.findById(alarmId)
-            .orElseThrow { ResourceNotFoundException(ALARM, "id", alarmId) }
+                .orElseThrow { ResourceNotFoundException(ALARM, "id", alarmId) }
         try {
             val jobKey = JobKey("PI_RADIO" + alarm?.webRadio, ALARM_JOBS)
 
@@ -101,6 +81,7 @@ class AlarmController(
                 alarmRepository.delete(alarm)
                 ResponseEntity.ok().build()
             }
+
             else -> ResponseEntity.notFound().build()
         }
     }
@@ -123,29 +104,28 @@ class AlarmController(
             }
             when {
                 isActive -> {
-                    // JobDetail jobDetail = buildJobDetail(alarmDetails.getName()+'_'+alarmDetails.getWebRadio()
                     val jobDetail = buildJobDetail(
-                        PI_RADIO + webRadioId,
-                        webRadioId,
-                        autoStopMinutes,
-                        when {
-                            webRadio != null -> webRadio.url
-                            else -> "dummy"
-                        }
+                            PI_RADIO + webRadioId,
+                            webRadioId,
+                            autoStopMinutes,
+                            when {
+                                webRadio != null -> webRadio.url
+                                else -> "dummy"
+                            }
                     )
                     val trigger = buildJobTrigger(jobDetail, cronSchedule, ZonedDateTime.now())
                     scheduler.scheduleJob(jobDetail, trigger)
                     ScheduleAlarmResponse(
-                        true,
-                        jobDetail.key.name, jobDetail.key.group, "Alarm Scheduled Successfully!"
+                            true,
+                            jobDetail.key.name, jobDetail.key.group, "Alarm Scheduled Successfully!"
                     )
                 }
             }
         } catch (ex: SchedulerException) {
             logger.error { "Error scheduling Alarm $ex" }
             ScheduleAlarmResponse(
-                false,
-                "Error scheduling Alarm. Please try later!"
+                    false,
+                    "Error scheduling Alarm. Please try later!"
             )
         }
     }
@@ -170,11 +150,11 @@ class AlarmController(
     private fun getCronSchedule(alarmDetails: Alarm?): String {
         // 0 45 6 ? * MON,TUE,WED,THU,FRI *
         val cronSchedule = (
-            "0 " +
-                (alarmDetails?.minute ?: 0) + " " +
-                (alarmDetails?.hour ?: 0) +
-                " ? * "
-            )
+                "0 " +
+                        (alarmDetails?.minute ?: 0) + " " +
+                        (alarmDetails?.hour ?: 0) +
+                        " ? * "
+                )
         var cronDays = ""
         when {
             alarmDetails != null -> {
@@ -190,17 +170,17 @@ class AlarmController(
         return "$cronSchedule$cronDays *"
     }
 
-    private fun stringAppend(cronDays: String, isDay: Boolean, day: String): String {
-        return when {
+    private fun stringAppend(cronDays: String, isDay: Boolean, day: String): String =
+        when {
             isDay -> {
                 when {
                     cronDays.isEmpty() -> day
                     else -> "$cronDays,$day"
                 }
             }
+
             else -> ""
         }
-    }
 
     private fun buildJobDetail(alarmName: String, webRadio: Int, autoStopMinutes: Int, url: String?): JobDetail {
         val jobDataMap = JobDataMap()
@@ -208,20 +188,20 @@ class AlarmController(
         jobDataMap["autoStopMinutes"] = autoStopMinutes
         jobDataMap["url"] = url
         return JobBuilder.newJob(AlarmJob::class.java)
-            .withIdentity(alarmName, ALARM_JOBS)
-            .withDescription("Alarm Job")
-            .usingJobData(jobDataMap)
-            .storeDurably(true)
-            .build()
+                .withIdentity(alarmName, ALARM_JOBS)
+                .withDescription("Alarm Job")
+                .usingJobData(jobDataMap)
+                .storeDurably(true)
+                .build()
     }
 
     private fun buildJobTrigger(jobDetail: JobDetail, cronSchedule: String, startAt: ZonedDateTime): Trigger {
         return TriggerBuilder.newTrigger()
-            .forJob(jobDetail)
-            .withIdentity(jobDetail.key.name, "Alarm-triggers")
-            .withDescription("Alarm Trigger")
-            .startAt(Date.from(startAt.toInstant()))
-            .withSchedule(CronScheduleBuilder.cronSchedule(cronSchedule))
-            .build()
+                .forJob(jobDetail)
+                .withIdentity(jobDetail.key.name, "Alarm-triggers")
+                .withDescription("Alarm Trigger")
+                .startAt(Date.from(startAt.toInstant()))
+                .withSchedule(CronScheduleBuilder.cronSchedule(cronSchedule))
+                .build()
     }
 }

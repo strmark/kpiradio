@@ -31,11 +31,11 @@ dependencies {
         exclude(module = "spring-boot-starter-tomcat")
     }
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlinversion.get()}")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${versions.jackson.get()}")
     implementation("org.springdoc:springdoc-openapi-kotlin:${versions.swagger.get()}")
     implementation("org.springdoc:springdoc-openapi-ui:${versions.swagger.get()}")
     implementation("io.github.microutils:kotlin-logging:${versions.klogging.get()}")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+    implementation("com.fasterxml.jackson:jackson-bom:${versions.jackson.get()}")
     implementation("com.h2database:h2:${versions.h2db.get()}")
     implementation("org.flywaydb:flyway-core:${versions.flyway.get()}")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${versions.kotlinx.get()}")
@@ -45,6 +45,7 @@ dependencies {
     }
     testCompileOnly("org.junit.jupiter:junit-jupiter-api:${versions.junit.get()}")
     testCompileOnly("org.junit.jupiter:junit-jupiter-engine:${versions.junit.get()}")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 }
 
 tasks.withType<KotlinCompile> {
