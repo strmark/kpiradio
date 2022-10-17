@@ -1,10 +1,10 @@
 [versions]
 flyway = "9.4.0"
 h2db = "2.1.214"
-jackson = "2.13.4"
+jackson = "2.13.4.20221013"
 junit = "5.9.1"
 klogging = "3.0.2"
 kotlinx = "1.4.1"
 kotlinversion = "1.7.0"
 springboot = "2.7.4"
-swagger = "1.6.11"
+swagger = "1.6.12"

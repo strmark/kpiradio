@@ -6,7 +6,7 @@ plugins {
     id("org.springframework.boot") version "2.7.4"
     id("io.spring.dependency-management") version "1.0.14.RELEASE"
     id("org.flywaydb.flyway") version "9.4.0"
-    id("com.github.ben-manes.versions") version "0.42.0"
+    id("com.github.ben-manes.versions") version "0.43.0"
     id("org.sonarqube") version "3.4.0.2513"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
