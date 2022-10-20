@@ -3,9 +3,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     val kotlinVersion = "1.7.20"
     `version-catalog`
-    id("org.springframework.boot") version "2.7.4"
+    id("org.springframework.boot") version "2.7.5"
     id("io.spring.dependency-management") version "1.1.0"
-    id("org.flywaydb.flyway") version "9.5.0"
+    id("org.flywaydb.flyway") version "9.5.1"
     id("com.github.ben-manes.versions") version "0.43.0"
     id("org.sonarqube") version "3.4.0.2513"
     kotlin("jvm") version kotlinVersion
