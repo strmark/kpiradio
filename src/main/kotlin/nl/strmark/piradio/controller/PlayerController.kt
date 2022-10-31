@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 @RestController
 class PlayerController(
-        private val webRadioRepository: WebRadioRepository,
-        private val vlcPlayer: VlcPlayer,
-        private val objectMapper: ObjectMapper
+    private val webRadioRepository: WebRadioRepository,
+    private val vlcPlayer: VlcPlayer,
+    private val objectMapper: ObjectMapper
 ) {
     companion object {
         private val logger = KotlinLogging.logger {}
@@ -26,7 +26,7 @@ class PlayerController(
     }
 
     @GetMapping(path = ["/player"], produces = ["application/json"])
-    fun get() = objectMapper.writeValueAsString(status)
+    fun get(): String = objectMapper.writeValueAsString(status)
 
     @PostMapping(path = ["/player"], produces = ["application/json"])
     fun updatePlayer(@RequestBody player: PlayerRequest): String {
@@ -67,14 +67,14 @@ class PlayerController(
             0 -> getWebRadioUrl(webRadioRepository.findAll().requireNoNulls())
             else -> {
                 webRadioRepository
-                        .findAll()
-                        .map { webRadio: WebRadio? ->
-                            when {
-                                webRadio != null -> webRadioId?.let { setDefaultAndSave(it, webRadio) }
-                                else -> null
-                            }
+                    .findAll()
+                    .map { webRadio: WebRadio? ->
+                        when {
+                            webRadio != null -> webRadioId?.let { setDefaultAndSave(it, webRadio) }
+                            else -> null
                         }
-                        .joinToString()
+                    }
+                    .joinToString()
             }
         }
         return startPlayer(url, autoStopMinutes)

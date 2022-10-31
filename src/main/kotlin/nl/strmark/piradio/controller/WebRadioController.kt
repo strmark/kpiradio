@@ -22,15 +22,16 @@ class WebRadioController(private val webRadioRepository: WebRadioRepository) {
     fun saveWebRadio(@RequestBody webRadioRequest: WebRadio): WebRadio = webRadioRepository.save(webRadioRequest)
 
     @GetMapping("/webRadio/{id}")
-    fun findById(@PathVariable(value = "id") webRadioId: Int): WebRadio? = webRadioRepository.findById(webRadioId).orElseThrow { ResourceNotFoundException(WEBRADIO, "id", webRadioId) }
+    fun findById(@PathVariable(value = "id") webRadioId: Int): WebRadio? =
+        webRadioRepository.findById(webRadioId).orElseThrow { ResourceNotFoundException(WEBRADIO, "id", webRadioId) }
 
     @PutMapping("/webRadio/{id}")
     fun saveWebRadio(
-            @PathVariable(value = "id") webRadioId: Int,
-            @RequestBody webRadioRequest: WebRadio
+        @PathVariable(value = "id") webRadioId: Int,
+        @RequestBody webRadioRequest: WebRadio
     ): WebRadio? {
         val webRadio = webRadioRepository.findById(webRadioId)
-                .orElseThrow { ResourceNotFoundException(WEBRADIO, "id", webRadioId) }
+            .orElseThrow { ResourceNotFoundException(WEBRADIO, "id", webRadioId) }
         return when {
             webRadio != null -> {
                 webRadio.name = webRadioRequest.name
@@ -45,7 +46,7 @@ class WebRadioController(private val webRadioRepository: WebRadioRepository) {
     @DeleteMapping("/webRadio/{id}")
     fun deleteWebRadio(@PathVariable(value = "id") webRadioId: Int): ResponseEntity<Long> {
         val webRadio = webRadioRepository.findById(webRadioId)
-                .orElseThrow { ResourceNotFoundException(WEBRADIO, "id", webRadioId) }
+            .orElseThrow { ResourceNotFoundException(WEBRADIO, "id", webRadioId) }
         return when {
             webRadio != null -> {
                 webRadioRepository.delete(webRadio)

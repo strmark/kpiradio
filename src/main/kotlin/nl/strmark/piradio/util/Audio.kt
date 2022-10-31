@@ -15,7 +15,8 @@ class Audio {
             val line = getOutputLine(device) ?: throw RuntimeException("$device output port not found")
             val opened = open(line)
             try {
-                val control = getVolumeControl(line) ?: throw RuntimeException("Volume control not found in $device port: $line")
+                val control =
+                    getVolumeControl(line) ?: throw RuntimeException("Volume control not found in $device port: $line")
                 control.value = value
             } finally {
                 if (opened) line.close()

@@ -42,7 +42,8 @@ class VolumeController(private val objectMapper: ObjectMapper) {
         return objectMapper.writeValueAsString(volume)
     }
 
-    private fun getDeviceVolume() = ceil(((Audio.getOutputVolume(piRadioProperties.device) ?: piRadioProperties.volume).times(100f))).toInt()
+    private fun getDeviceVolume() =
+        ceil(((Audio.getOutputVolume(piRadioProperties.device) ?: piRadioProperties.volume).times(100f))).toInt()
 
     private fun roundValue(volume: Int) = volume.coerceAtLeast(0).coerceAtMost(100)
 }
