@@ -10,9 +10,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 class WebRadioRepositoryTest(@Autowired val webRadioRepository: WebRadioRepository) {
 
     @Test
-    fun whenFindByIdThenReturnRadio() {
+    fun whenFindByIdThenReturnWebRadio() {
         val radio = WebRadio(
-            id = 0,
+            id = 1,
             name = "test",
             url = "http://test",
             isDefault = false

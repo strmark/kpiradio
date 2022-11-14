@@ -1,12 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    val kotlinVersion = "1.7.21"
+    val kotlinVersion = "1.8.0-Beta"
     `version-catalog`
-    id("org.springframework.boot") version "2.7.5"
+    id("org.springframework.boot") version "3.0.0-RC2"
     id("io.spring.dependency-management") version "1.1.0"
-    id("org.flywaydb.flyway") version "9.7.0"
-    id("com.github.ben-manes.versions") version "0.43.0"
+    id("org.flywaydb.flyway") version "9.8.1"
+    id("com.github.ben-manes.versions") version "0.44.0"
     id("org.sonarqube") version "3.5.0.2730"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
@@ -20,6 +20,7 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
+    maven { url = uri("https://repo.spring.io/milestone") }
 }
 
 dependencies {
@@ -27,16 +28,18 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:${versions.springboot.get()}")
     implementation("org.springframework.boot:spring-boot-starter-jetty:${versions.springboot.get()}")
     implementation("org.springframework.boot:spring-boot-starter-quartz:${versions.springboot.get()}")
-    implementation("org.springframework.boot:spring-boot-starter-web:${versions.springboot.get()}") {
-        exclude(module = "spring-boot-starter-tomcat")
-    }
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf:${versions.springboot.get()}")
+//    implementation("org.springframework.boot:spring-boot-starter-web:${versions.springboot.get()}") {
+//        exclude(module = "spring-boot-starter-tomcat")
+//    }
+    implementation("org.springframework.boot:spring-boot-starter-web:${versions.springboot.get()}")
+    implementation("com.fasterxml.jackson:jackson-bom:${versions.jackson.get()}")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:${versions.kotlinversion.get()}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlinversion.get()}")
-    implementation("org.springdoc:springdoc-openapi-kotlin:${versions.swagger.get()}")
-    implementation("org.springdoc:springdoc-openapi-ui:${versions.swagger.get()}")
+    implementation("org.springdoc:springdoc-openapi-kotlin-tests:${versions.swagger.get()}")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${versions.swagger.get()}")
     implementation("io.github.microutils:kotlin-logging:${versions.klogging.get()}")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-    implementation("com.fasterxml.jackson:jackson-bom:${versions.jackson.get()}")
-    implementation("com.h2database:h2:${versions.h2db.get()}")
     implementation("org.flywaydb:flyway-core:${versions.flyway.get()}")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${versions.kotlinx.get()}")
     implementation("com.h2database:h2:${versions.h2db.get()}")
@@ -59,7 +62,7 @@ tasks.withType<Test> {
 }
 
 tasks.withType<Wrapper> {
-    gradleVersion = "7.5.1"
+    gradleVersion = "7.6-rc-3"
 }
 
 flyway {
