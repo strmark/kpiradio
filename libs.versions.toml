@@ -1,5 +1,5 @@
 [versions]
-flyway = "9.8.1"
+flyway = "9.8.2"
 h2db = "2.1.214"
 jackson = "2.14.0"
 junit = "5.9.1"
@@ -7,4 +7,4 @@ klogging = "3.0.4"
 kotlinx = "1.4.1"
 kotlinversion = "1.8.0-Beta"
 springboot = "3.0.0-RC2"
-swagger = "2.0.0-RC1"
+swagger = "2.0.0-RC2"
