@@ -3,9 +3,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     val kotlinVersion = "1.8.0-Beta"
     `version-catalog`
-    id("org.springframework.boot") version "3.0.0-RC2"
+    id("org.springframework.boot") version "3.0.0"
     id("io.spring.dependency-management") version "1.1.0"
-    id("org.flywaydb.flyway") version "9.8.2"
+    id("org.flywaydb.flyway") version "9.8.3"
     id("com.github.ben-manes.versions") version "0.44.0"
     id("org.sonarqube") version "3.5.0.2730"
     kotlin("jvm") version kotlinVersion
@@ -28,11 +28,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:${versions.springboot.get()}")
     implementation("org.springframework.boot:spring-boot-starter-jetty:${versions.springboot.get()}")
     implementation("org.springframework.boot:spring-boot-starter-quartz:${versions.springboot.get()}")
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf:${versions.springboot.get()}")
+    implementation("org.springframework.boot:spring-boot-starter-web:${versions.springboot.get()}")
 //    implementation("org.springframework.boot:spring-boot-starter-web:${versions.springboot.get()}") {
 //        exclude(module = "spring-boot-starter-tomcat")
 //    }
-    implementation("org.springframework.boot:spring-boot-starter-web:${versions.springboot.get()}")
     implementation("com.fasterxml.jackson:jackson-bom:${versions.jackson.get()}")
     implementation("org.jetbrains.kotlin:kotlin-reflect:${versions.kotlinversion.get()}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlinversion.get()}")
@@ -62,7 +61,7 @@ tasks.withType<Test> {
 }
 
 tasks.withType<Wrapper> {
-    gradleVersion = "7.6-rc-4"
+    gradleVersion = "7.6"
 }
 
 flyway {
