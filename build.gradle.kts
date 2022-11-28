@@ -39,6 +39,8 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${versions.swagger.get()}")
     implementation("io.github.microutils:kotlin-logging:${versions.klogging.get()}")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+    implementation("com.fasterxml.jackson:jackson-bom:${versions.jackson.get()}")
+    implementation("com.h2database:h2:${versions.h2db.get()}")
     implementation("org.flywaydb:flyway-core:${versions.flyway.get()}")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${versions.kotlinx.get()}")
     implementation("com.h2database:h2:${versions.h2db.get()}")
