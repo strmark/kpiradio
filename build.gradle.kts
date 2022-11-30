@@ -29,9 +29,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-jetty:${versions.springboot.get()}")
     implementation("org.springframework.boot:spring-boot-starter-quartz:${versions.springboot.get()}")
     implementation("org.springframework.boot:spring-boot-starter-web:${versions.springboot.get()}")
-//    implementation("org.springframework.boot:spring-boot-starter-web:${versions.springboot.get()}") {
-//        exclude(module = "spring-boot-starter-tomcat")
-//    }
+    implementation("org.springframework.boot:spring-boot-starter-web:${versions.springboot.get()}") {
+        exclude(module = "spring-boot-starter-tomcat")
+    }
+    implementation("jakarta.servlet:jakarta.servlet-api:${versions.jakarta.get()}")
     implementation("com.fasterxml.jackson:jackson-bom:${versions.jackson.get()}")
     implementation("org.jetbrains.kotlin:kotlin-reflect:${versions.kotlinversion.get()}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlinversion.get()}")
