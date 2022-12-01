@@ -36,7 +36,7 @@ class VolumeController(private val objectMapper: ObjectMapper) {
     @PostMapping(path = ["/volume"], produces = ["application/json"])
     fun updateVolume(@RequestBody request: VolumeRequest): String {
         val vol = request.volume.toFloat() / 100
-        volume = VolumeValue(roundValue(vol.toInt()))
+        volume = VolumeValue(roundValue(request.volume))
         logger.info("Volume $vol")
         Audio.setOutputVolume(piRadioProperties.device, vol)
         return objectMapper.writeValueAsString(volume)
