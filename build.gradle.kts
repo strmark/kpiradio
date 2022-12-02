@@ -28,7 +28,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:${versions.springboot.get()}")
     implementation("org.springframework.boot:spring-boot-starter-jetty:${versions.springboot.get()}")
     implementation("org.springframework.boot:spring-boot-starter-quartz:${versions.springboot.get()}")
-    implementation("org.springframework.boot:spring-boot-starter-web:${versions.springboot.get()}")
     implementation("org.springframework.boot:spring-boot-starter-web:${versions.springboot.get()}") {
         exclude(module = "spring-boot-starter-tomcat")
     }
