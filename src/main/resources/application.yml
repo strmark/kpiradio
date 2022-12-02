@@ -42,6 +42,7 @@ springdoc:
     operationsSorter: method
     disable-swagger-default-url: true
     use-root-path: true
+    path: "/swagger-ui.html"
   show-actuator: true
   group-configs:
     - group: piradio

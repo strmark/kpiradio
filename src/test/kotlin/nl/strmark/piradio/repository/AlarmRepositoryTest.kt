@@ -10,9 +10,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 class AlarmRepositoryTest(@Autowired val alarmRepository: AlarmRepository) {
 
     @Test
-    fun whenFindByIdThenReturnRadio() {
+    fun whenFindByIdThenReturnAlarm() {
         val alarm = Alarm(
-            id = 0,
+            id = 1,
             name = "AlarmTest",
             monday = false,
             tuesday = false,
