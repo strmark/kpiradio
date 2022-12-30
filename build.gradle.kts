@@ -35,7 +35,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation:${versions.springboot.get()}")
     implementation("com.fasterxml.jackson:jackson-bom:${versions.jackson.get()}")
     implementation("org.jetbrains.kotlin:kotlin-reflect:${versions.kotlinversion.get()}")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlinversion.get()}")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlinversion.get()}")
     implementation("org.springdoc:springdoc-openapi-kotlin-tests:${versions.swagger.get()}")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${versions.swagger.get()}")
     implementation("io.github.microutils:kotlin-logging:${versions.klogging.get()}")
