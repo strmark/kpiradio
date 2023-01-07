@@ -8,7 +8,7 @@ plugins {
     id("org.flywaydb.flyway") version "9.11.0"
     id("com.github.ben-manes.versions") version "0.44.0"
     id("org.sonarqube") version "3.5.0.2730"
-    id("org.owasp.dependencycheck") version "7.4.3"
+    id("org.owasp.dependencycheck") version "7.4.4"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     kotlin("plugin.jpa") version kotlinVersion
