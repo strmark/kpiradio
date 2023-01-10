@@ -30,7 +30,7 @@ dependencies {
     implementation("com.h2database:h2:${versions.h2db.get()}")
     implementation("io.github.microutils:kotlin-logging:${versions.klogging.get()}")
     // managed for jetty
-    developmentOnly("jakarta.servlet:jakarta.servlet-api:${versions.jakarta.get()}")
+    implementation("jakarta.servlet:jakarta.servlet-api:${versions.jakarta.get()}")
     implementation("org.flywaydb:flyway-core:${versions.flyway.get()}")
     implementation("org.jetbrains.kotlin:kotlin-reflect:${versions.kotlinversion.get()}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlinversion.get()}")
