@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     val kotlinVersion = "1.8.10"
     `version-catalog`
-    id("org.springframework.boot") version "3.0.2"
+    id("org.springframework.boot") version "3.0.3"
     id("io.spring.dependency-management") version "1.1.0"
     id("org.flywaydb.flyway") version "9.15.1"
     id("com.github.ben-manes.versions") version "0.46.0"
@@ -28,8 +28,6 @@ dependencies {
     implementation("com.fasterxml.jackson:jackson-bom:${versions.jackson.get()}")
     implementation("com.h2database:h2:${versions.h2db.get()}")
     implementation("io.github.microutils:kotlin-logging:${versions.klogging.get()}")
-    // managed for jetty
-    implementation("jakarta.servlet:jakarta.servlet-api:${versions.jakarta.get()}")
     implementation("org.flywaydb:flyway-core:${versions.flyway.get()}")
     implementation("org.jetbrains.kotlin:kotlin-reflect:${versions.kotlinversion.get()}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlinversion.get()}")
