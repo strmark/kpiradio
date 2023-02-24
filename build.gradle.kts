@@ -61,6 +61,18 @@ tasks.withType<Wrapper> {
     gradleVersion = "8.0.1"
 }
 
+tasks.withType<DependencyUpdatesTask> {
+    resolutionStrategy {
+        componentSelection {
+            all {
+                if (isNonStable(candidate.version) && !isNonStable(currentVersion)) {
+                    reject("Release candidate")
+                }
+            }
+        }
+    }
+}
+
 flyway {
     url = "jdbc:h2:file:./database/piradio"
     user = "pi"
