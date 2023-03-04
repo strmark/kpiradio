@@ -165,33 +165,25 @@ class AlarmController(
 
     private fun getCronSchedule(alarmDetails: Alarm?): String {
         // 0 45 6 ? * MON,TUE,WED,THU,FRI *
-        val cronSchedule = (
-            "0 " +
-                (alarmDetails?.minute ?: 0) + " " +
-                (alarmDetails?.hour ?: 0) +
-                " ? * "
-            )
+        val cronSchedule = "0 ${alarmDetails?.minute ?: 0} ${alarmDetails?.hour ?: 0} ? * "
         var cronDays = ""
         when {
             alarmDetails != null -> {
-                cronDays = stringAppend(cronDays, alarmDetails.monday, "MON")
-                cronDays = stringAppend(cronDays, alarmDetails.tuesday, "TUE")
-                cronDays = stringAppend(cronDays, alarmDetails.wednesday, "WED")
-                cronDays = stringAppend(cronDays, alarmDetails.thursday, "THU")
-                cronDays = stringAppend(cronDays, alarmDetails.friday, "FRI")
-                cronDays = stringAppend(cronDays, alarmDetails.saturday, "SAT")
-                cronDays = stringAppend(cronDays, alarmDetails.sunday, "SUN")
+                cronDays += stringAppend(alarmDetails.monday, "MON")
+                cronDays += stringAppend(alarmDetails.tuesday, "TUE")
+                cronDays += stringAppend(alarmDetails.wednesday, "WED")
+                cronDays += stringAppend(alarmDetails.thursday, "THU")
+                cronDays += stringAppend(alarmDetails.friday, "FRI")
+                cronDays += stringAppend(alarmDetails.saturday, "SAT")
+                cronDays += stringAppend(alarmDetails.sunday, "SUN")
             }
         }
         return "$cronSchedule$cronDays *"
     }
 
-    private fun stringAppend(cronDays: String, isDay: Boolean, day: String): String =
+    private fun stringAppend(isDay: Boolean, day: String): String =
         when {
-            isDay -> when {
-                cronDays.isEmpty() -> day
-                else -> "$cronDays,$day"
-            }
+            isDay -> day
             else -> ""
         }
 

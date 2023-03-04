@@ -19,8 +19,8 @@ class VlcPlayer {
     private var vlcPlayerProcess: Process? = null
 
     fun open(url: String, autoStopMinutes: Long) {
-        when (vlcPlayerProcess != null) {
-            true -> {
+        when {
+            vlcPlayerProcess != null -> {
                 stopVlcPlayer()
                 open(url, autoStopMinutes)
             }

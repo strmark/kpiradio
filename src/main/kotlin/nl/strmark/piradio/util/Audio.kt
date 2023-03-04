@@ -50,7 +50,6 @@ object Audio {
     }
 
     private fun findControl(type: Control.Type, vararg controls: Control): Control? {
-        if (controls.isEmpty()) return null
         for (control in controls) {
             when {
                 control.type == type -> return control
@@ -89,13 +88,14 @@ object Audio {
             null
         }
 
-    private fun open(line: Line): Boolean {
-        if (line.isOpen) return false
-        return try {
-            line.open()
-            true
-        } catch (ex: LineUnavailableException) {
-            false
+    private fun open(line: Line): Boolean =
+        when {
+            line.isOpen -> false
+            else -> try {
+                line.open()
+                true
+            } catch (ex: LineUnavailableException) {
+                false
+            }
         }
-    }
 }
