@@ -1,6 +1,7 @@
 package nl.strmark.piradio.util
 
-import javax.sound.sampled.AudioSystem
+import javax.sound.sampled.AudioSystem.getMixer
+import javax.sound.sampled.AudioSystem.getMixerInfo
 import javax.sound.sampled.CompoundControl
 import javax.sound.sampled.Control
 import javax.sound.sampled.FloatControl
@@ -63,11 +64,9 @@ object Audio {
     }
 
     private fun getMixers(): List<Mixer> {
-        val infos = AudioSystem.getMixerInfo()
-        val mixers: MutableList<Mixer> = ArrayList(infos.size)
-        for (info in infos) {
-            val mixer = AudioSystem.getMixer(info)
-            mixers.add(mixer)
+        val mixers = mutableListOf<Mixer>()
+        for (info in getMixerInfo()) {
+            mixers.add(getMixer(info))
         }
         return mixers
     }
@@ -76,10 +75,9 @@ object Audio {
         getAvailableLines(mixer, mixer.targetLineInfo)
 
     private fun getAvailableLines(mixer: Mixer, lineInfos: Array<Line.Info>): List<Line?> {
-        val lines: MutableList<Line?> = ArrayList(lineInfos.size)
+        val lines = mutableListOf<Line?>()
         for (lineInfo in lineInfos) {
-            val line: Line? = getLineIfAvailable(mixer, lineInfo)
-            if (line != null) lines.add(line)
+            getLineIfAvailable(mixer, lineInfo).let { line -> lines.add(line) }
         }
         return lines
     }

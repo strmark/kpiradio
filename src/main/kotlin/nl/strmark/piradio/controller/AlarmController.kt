@@ -18,6 +18,8 @@ import org.quartz.SchedulerException
 import org.quartz.Trigger
 import org.quartz.TriggerBuilder.newTrigger
 import org.springframework.http.ResponseEntity
+import org.springframework.http.ResponseEntity.notFound
+import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -94,9 +96,9 @@ class AlarmController(
         return when {
             alarm != null -> {
                 alarmRepository.delete(alarm)
-                ResponseEntity.ok().build()
+                ok().build()
             }
-            else -> ResponseEntity.notFound().build()
+            else -> notFound().build()
         }
     }
 
