@@ -5,7 +5,8 @@ import mu.KotlinLogging
 import nl.strmark.piradio.payload.VolumeRequest
 import nl.strmark.piradio.payload.VolumeValue
 import nl.strmark.piradio.properties.PiRadioProperties
-import nl.strmark.piradio.util.Audio
+import nl.strmark.piradio.util.Audio.getOutputVolume
+import nl.strmark.piradio.util.Audio.setOutputVolume
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
@@ -37,13 +38,13 @@ class VolumeController(private val objectMapper: ObjectMapper) {
     fun updateVolume(@RequestBody request: VolumeRequest): String {
         val vol = request.volume.toFloat() / 100
         volume = VolumeValue(roundValue(request.volume))
-        logger.info("Volume $vol")
-        Audio.setOutputVolume(piRadioProperties.device, vol)
+        logger.info { "Volume $vol" }
+        setOutputVolume(piRadioProperties.device, vol)
         return objectMapper.writeValueAsString(volume)
     }
 
     private fun getDeviceVolume() =
-        ceil(((Audio.getOutputVolume(piRadioProperties.device) ?: piRadioProperties.volume).times(100f))).toInt()
+        ceil(((getOutputVolume(piRadioProperties.device) ?: piRadioProperties.volume).times(100f))).toInt()
 
     private fun roundValue(volume: Int) = volume.coerceAtLeast(0).coerceAtMost(100)
 }

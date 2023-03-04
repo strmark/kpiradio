@@ -30,8 +30,8 @@ class PlayerController(
 
     @PostMapping(path = ["/player"], produces = ["application/json"])
     fun updatePlayer(@RequestBody player: PlayerRequest): String {
-        logger.info("WebRadio: ${player.webRadio}")
-        logger.info("Status: ${player.status}")
+        logger.info { "WebRadio: ${player.webRadio}" }
+        logger.info { "Status: ${player.status}" }
         return when (player.status) {
             "on" -> startPlayer(player.webRadio, player.autoStopMinutes)
             else -> stopPlayer()
@@ -104,7 +104,6 @@ class PlayerController(
         return null
     }
 
-    private fun getWebRadioUrl(webRadioList: List<WebRadio>): String? {
-        return webRadioList.firstOrNull(WebRadio::isDefault)?.url
-    }
+    private fun getWebRadioUrl(webRadioList: List<WebRadio>): String? =
+        webRadioList.firstOrNull(WebRadio::isDefault)?.url
 }

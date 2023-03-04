@@ -9,14 +9,14 @@ import nl.strmark.piradio.payload.ScheduleAlarmResponse
 import nl.strmark.piradio.repository.AlarmRepository
 import nl.strmark.piradio.repository.WebRadioRepository
 import org.quartz.CronScheduleBuilder
-import org.quartz.JobBuilder
+import org.quartz.JobBuilder.newJob
 import org.quartz.JobDataMap
 import org.quartz.JobDetail
 import org.quartz.JobKey
 import org.quartz.Scheduler
 import org.quartz.SchedulerException
 import org.quartz.Trigger
-import org.quartz.TriggerBuilder
+import org.quartz.TriggerBuilder.newTrigger
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -82,7 +82,6 @@ class AlarmController(
             .orElseThrow { ResourceNotFoundException(ALARM, "id", alarmId) }
         try {
             val jobKey = JobKey("PI_RADIO" + alarm?.webRadio, ALARM_JOBS)
-
             when {
                 scheduler.checkExists(jobKey) -> {
                     logger.info { "Delete schedule" }
@@ -97,7 +96,6 @@ class AlarmController(
                 alarmRepository.delete(alarm)
                 ResponseEntity.ok().build()
             }
-
             else -> ResponseEntity.notFound().build()
         }
     }
@@ -107,9 +105,7 @@ class AlarmController(
             val webRadioOptional = webRadioRepository.findById(webRadioId)
             var webRadio: WebRadio? = null
             when {
-                webRadioOptional.isPresent -> {
-                    webRadio = webRadioOptional.get()
-                }
+                webRadioOptional.isPresent -> webRadio = webRadioOptional.get()
             }
             val jobKey = JobKey(PI_RADIO + webRadioId, ALARM_JOBS)
             when {
@@ -143,7 +139,7 @@ class AlarmController(
             logger.error { "Error scheduling Alarm $ex" }
             ScheduleAlarmResponse(
                 false,
-                "Error scheduling Alarm. Please try later!"
+                "Error scheduling Alarm. Please try later!",
             )
         }
     }
@@ -190,13 +186,10 @@ class AlarmController(
 
     private fun stringAppend(cronDays: String, isDay: Boolean, day: String): String =
         when {
-            isDay -> {
-                when {
-                    cronDays.isEmpty() -> day
-                    else -> "$cronDays,$day"
-                }
+            isDay -> when {
+                cronDays.isEmpty() -> day
+                else -> "$cronDays,$day"
             }
-
             else -> ""
         }
 
@@ -205,7 +198,7 @@ class AlarmController(
         jobDataMap["webRadio"] = webRadio
         jobDataMap["autoStopMinutes"] = autoStopMinutes
         jobDataMap["url"] = url
-        return JobBuilder.newJob(AlarmJob::class.java)
+        return newJob(AlarmJob::class.java)
             .withIdentity(alarmName, ALARM_JOBS)
             .withDescription("Alarm Job")
             .usingJobData(jobDataMap)
@@ -214,7 +207,7 @@ class AlarmController(
     }
 
     private fun buildJobTrigger(jobDetail: JobDetail, cronSchedule: String, startAt: ZonedDateTime): Trigger {
-        return TriggerBuilder.newTrigger()
+        return newTrigger()
             .forJob(jobDetail)
             .withIdentity(jobDetail.key.name, "Alarm-triggers")
             .withDescription("Alarm Trigger")
