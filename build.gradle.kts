@@ -1,5 +1,6 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.util.Locale
 
 plugins {
     val kotlinVersion = "1.8.10"
@@ -37,9 +38,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-jetty:${versions.springboot.get()}")
     implementation("org.springframework.boot:spring-boot-starter-quartz:${versions.springboot.get()}")
     implementation("org.springframework.boot:spring-boot-starter-validation:${versions.springboot.get()}")
-    implementation("org.springframework.boot:spring-boot-starter-web:${versions.springboot.get()}") {
-        exclude(module = "spring-boot-starter-tomcat")
-    }
+    implementation("org.springframework.boot:spring-boot-starter-web:${versions.springboot.get()}")
+//  jetty not working fine with test and bootRun
+//    {
+//        exclude(module = "spring-boot-starter-tomcat")
+//    }
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     implementation("org.springdoc:springdoc-openapi-kotlin-tests:${versions.swagger.get()}")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${versions.swagger.get()}")
@@ -94,7 +97,7 @@ dependencyCheck {
 }
 
 fun isNonStable(version: String): Boolean {
-    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.uppercase(Locale.getDefault()).contains(it) }
     val regex = "^[0-9,.v-]+(-r)?$".toRegex()
     val isStable = stableKeyword || regex.matches(version)
     return isStable.not()
