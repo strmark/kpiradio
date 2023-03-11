@@ -27,7 +27,7 @@ repositories {
 
 dependencies {
     val versions = kpiLibs.versions
-    implementation("com.fasterxml.jackson:jackson-bom:${versions.jackson.get()}")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${versions.jackson.get()}")
     implementation("com.h2database:h2:${versions.h2db.get()}")
     implementation("io.github.microutils:kotlin-logging:${versions.klogging.get()}")
     implementation("org.flywaydb:flyway-core:${versions.flyway.get()}")
@@ -40,9 +40,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation:${versions.springboot.get()}")
     implementation("org.springframework.boot:spring-boot-starter-web:${versions.springboot.get()}")
 //  jetty not working fine with test and bootRun
-//    {
-//        exclude(module = "spring-boot-starter-tomcat")
-//    }
+    {
+        exclude(module = "spring-boot-starter-tomcat")
+    }
+    developmentOnly("jakarta.servlet:jakarta.servlet-api:${versions.jakarta.get()}")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     implementation("org.springdoc:springdoc-openapi-kotlin-tests:${versions.swagger.get()}")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${versions.swagger.get()}")
