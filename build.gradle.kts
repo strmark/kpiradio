@@ -7,7 +7,7 @@ plugins {
     `version-catalog`
     id("org.springframework.boot") version "3.0.4"
     id("io.spring.dependency-management") version "1.1.0"
-    id("org.flywaydb.flyway") version "9.15.2"
+    id("org.flywaydb.flyway") version "9.16.0"
     id("com.github.ben-manes.versions") version "0.46.0"
     id("org.sonarqube") version "4.0.0.2929"
     id("org.owasp.dependencycheck") version "8.1.2"
