@@ -1,5 +1,5 @@
 [versions]
-flyway = "9.16.0"
+flyway = "9.16.1"
 h2db = "2.1.214"
 jackson = "2.14.2"
 jakarta = "5.0.0"
