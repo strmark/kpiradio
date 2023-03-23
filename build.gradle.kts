@@ -5,12 +5,12 @@ import java.util.Locale
 plugins {
     val kotlinVersion = "1.8.10"
     `version-catalog`
-    id("org.springframework.boot") version "3.0.4"
+    id("org.springframework.boot") version "3.0.5"
     id("io.spring.dependency-management") version "1.1.0"
     id("org.flywaydb.flyway") version "9.16.1"
     id("com.github.ben-manes.versions") version "0.46.0"
     id("org.sonarqube") version "4.0.0.2929"
-    id("org.owasp.dependencycheck") version "8.1.2"
+    id("org.owasp.dependencycheck") version "8.2.1"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     kotlin("plugin.jpa") version kotlinVersion
