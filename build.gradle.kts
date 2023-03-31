@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.Locale
 
 plugins {
-    val kotlinVersion = "1.8.10"
+    val kotlinVersion = "1.8.20"
     `version-catalog`
     id("org.springframework.boot") version "3.0.5"
     id("io.spring.dependency-management") version "1.1.0"
