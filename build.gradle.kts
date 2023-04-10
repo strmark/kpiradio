@@ -43,6 +43,7 @@ dependencies {
     {
         exclude(module = "spring-boot-starter-tomcat")
     }
+    implementation("org.yaml:snakeyaml:${versions.snakeyaml.get()}")
     developmentOnly("jakarta.servlet:jakarta.servlet-api:${versions.jakarta.get()}")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     implementation("org.springdoc:springdoc-openapi-kotlin-tests:${versions.swagger.get()}")
