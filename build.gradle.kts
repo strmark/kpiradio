@@ -10,19 +10,21 @@ plugins {
     id("org.flywaydb.flyway") version "9.16.3"
     id("com.github.ben-manes.versions") version "0.46.0"
     id("org.sonarqube") version "4.0.0.2929"
-    id("org.owasp.dependencycheck") version "8.2.1"
+    id("org.owasp.dependencycheck") version "8.2.1" apply true
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     kotlin("plugin.jpa") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
 }
 
-group = "nl.strmark"
-version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_17
+allprojects {
+    group = "nl.strmark"
+    version = "0.0.1-SNAPSHOT"
+    java.sourceCompatibility = JavaVersion.VERSION_17
 
-repositories {
-    mavenCentral()
+    repositories {
+        mavenCentral()
+    }
 }
 
 dependencies {
@@ -68,14 +70,8 @@ tasks.withType<Wrapper> {
 }
 
 tasks.withType<DependencyUpdatesTask> {
-    resolutionStrategy {
-        componentSelection {
-            all {
-                if (isNonStable(candidate.version) && !isNonStable(currentVersion)) {
-                    reject("Release candidate")
-                }
-            }
-        }
+    rejectVersionIf {
+        isNonStable(candidate.version) && !isNonStable(currentVersion)
     }
 }
 
@@ -104,5 +100,3 @@ fun isNonStable(version: String): Boolean {
     val isStable = stableKeyword || regex.matches(version)
     return isStable.not()
 }
-
-apply(plugin = "org.owasp.dependencycheck")
