@@ -1,6 +1,6 @@
 [versions]
 dependencymanagement = "1.1.0"
-flyway = "9.18.0"
+flyway = "9.19.0"
 h2db = "2.1.214"
 jackson = "2.15.1"
 jakarta = "5.0.0"
