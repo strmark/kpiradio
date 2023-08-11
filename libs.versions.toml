@@ -1,5 +1,5 @@
 [versions]
-dependencymanagement = "1.1.2"
+dependencymanagement = "1.1.3"
 flyway = "9.21.1"
 h2db = "2.2.220"
 jackson = "2.15.2"
@@ -13,4 +13,4 @@ owasp = "8.3.1"
 snakeyaml = "2.1"
 springboot = "3.1.2"
 sonarqube = "4.3.0.3225"
-swagger = "2.1.0"
+swagger = "2.2.0"
