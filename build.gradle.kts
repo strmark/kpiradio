@@ -2,16 +2,16 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kpiLibs.versions.let { versions ->
-        id("org.springframework.boot") version versions.springboot.get()
-        id("io.spring.dependency-management") version versions.dependencymanagement.get()
-        id("org.flywaydb.flyway") version versions.flyway.get()
-        id("com.github.ben-manes.versions") version versions.manes.get()
-        id("org.sonarqube") version versions.sonarqube.get()
-        id("org.owasp.dependencycheck") version versions.owasp.get()
-        kotlin("jvm") version versions.kotlin.get()
-        kotlin("plugin.spring") version versions.kotlin.get()
-        kotlin("plugin.jpa") version versions.kotlin.get()
+    with(kpiLibs.versions) {
+        id("org.springframework.boot") version springboot.get()
+        id("io.spring.dependency-management") version dependencymanagement.get()
+        id("org.flywaydb.flyway") version flyway.get()
+        id("com.github.ben-manes.versions") version manes.get()
+        id("org.sonarqube") version sonarqube.get()
+        id("org.owasp.dependencycheck") version owasp.get()
+        kotlin("jvm") version kotlin.get()
+        kotlin("plugin.spring") version kotlin.get()
+        kotlin("plugin.jpa") version kotlin.get()
     }
 }
 
@@ -24,32 +24,34 @@ allprojects {
         mavenCentral()
     }
 
-    kpiLibs.versions.let { versions ->
+    with(kpiLibs.versions) {
         dependencies {
-            implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${versions.jackson.get()}")
-            implementation("com.h2database:h2:${versions.h2db.get()}")
-            implementation("io.github.microutils:kotlin-logging:${versions.klogging.get()}")
-            implementation("org.flywaydb:flyway-core:${versions.flyway.get()}")
-            implementation("org.jetbrains.kotlin:kotlin-reflect:${versions.kotlin.get()}")
-            implementation("org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin.get()}")
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${versions.kotlinx.get()}")
-            implementation("org.springframework.boot:spring-boot-starter-data-jpa:${versions.springboot.get()}")
-            implementation("org.springframework.boot:spring-boot-starter-jetty:${versions.springboot.get()}")
-            implementation("org.springframework.boot:spring-boot-starter-quartz:${versions.springboot.get()}")
-            implementation("org.springframework.boot:spring-boot-starter-validation:${versions.springboot.get()}")
-            implementation("org.springframework.boot:spring-boot-starter-web:${versions.springboot.get()}")
-//  jetty not working fine with test and bootRun
-            {
-                exclude(module = "spring-boot-starter-tomcat")
+            ext["jakarta-servlet.version"] = jakarta.get()
+            implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${jackson.get()}")
+            implementation("com.h2database:h2:${h2db.get()}")
+            implementation("io.github.microutils:kotlin-logging:${klogging.get()}")
+            implementation("org.flywaydb:flyway-core:${flyway.get()}")
+            implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlin.get()}")
+            implementation("org.jetbrains.kotlin:kotlin-stdlib:${kotlin.get()}")
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlinx.get()}")
+            implementation("org.springframework.boot:spring-boot-starter-data-jpa:${springboot.get()}")
+            implementation("org.springframework.boot:spring-boot-starter-jetty:${springboot.get()}")
+            implementation("org.springframework.boot:spring-boot-starter-quartz:${springboot.get()}")
+            implementation("org.springframework.boot:spring-boot-starter-validation:${springboot.get()}")
+            implementation("org.springframework.boot:spring-boot-starter-web:${springboot.get()}")
+            implementation("org.springframework.boot:spring-boot-starter-jetty:${springboot.get()}")
+            modules {
+                module("org.springframework.boot:spring-boot-starter-tomcat") {
+                    replacedBy("org.springframework.boot:spring-boot-starter-jetty", "Use Jetty instead of Tomcat")
+                }
             }
-            implementation("org.yaml:snakeyaml:${versions.snakeyaml.get()}")
-            implementation("org.eclipse.jetty:jetty-server:${versions.jetty.get()}")
+            implementation("org.yaml:snakeyaml:${snakeyaml.get()}")
             developmentOnly("org.springframework.boot:spring-boot-devtools")
-            implementation("org.springdoc:springdoc-openapi-kotlin-tests:${versions.swagger.get()}")
-            implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${versions.swagger.get()}")
-            testCompileOnly("org.junit.jupiter:junit-jupiter-api:${versions.junit.get()}")
-            testCompileOnly("org.junit.jupiter:junit-jupiter-engine:${versions.junit.get()}")
-            testImplementation("org.springframework.boot:spring-boot-starter-test:${versions.springboot.get()}")
+            implementation("org.springdoc:springdoc-openapi-kotlin-tests:${swagger.get()}")
+            implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${swagger.get()}")
+            testCompileOnly("org.junit.jupiter:junit-jupiter-api:${junit.get()}")
+            testCompileOnly("org.junit.jupiter:junit-jupiter-engine:${junit.get()}")
+            testImplementation("org.springframework.boot:spring-boot-starter-test:${springboot.get()}")
         }
     }
 }
