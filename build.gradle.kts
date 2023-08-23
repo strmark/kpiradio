@@ -1,17 +1,18 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.ir.backend.js.compile
 
 plugins {
     with(kpiLibs.versions) {
-        id("org.springframework.boot") version springboot.get()
-        id("io.spring.dependency-management") version dependencymanagement.get()
-        id("org.flywaydb.flyway") version flyway.get()
-        id("com.github.ben-manes.versions") version manes.get()
-        id("org.sonarqube") version sonarqube.get()
-        id("org.owasp.dependencycheck") version owasp.get()
-        kotlin("jvm") version kotlin.get()
-        kotlin("plugin.spring") version kotlin.get()
-        kotlin("plugin.jpa") version kotlin.get()
+        id("org.springframework.boot") version springboot
+        id("io.spring.dependency-management") version dependencymanagement
+        id("org.flywaydb.flyway") version flyway
+        id("com.github.ben-manes.versions") version manes
+        id("org.sonarqube") version sonarqube
+        id("org.owasp.dependencycheck") version owasp
+        kotlin("jvm") version kotlin
+        kotlin("plugin.spring") version kotlin
+        kotlin("plugin.jpa") version kotlin
     }
 }
 
@@ -26,11 +27,13 @@ allprojects {
 
     with(kpiLibs.versions) {
         dependencies {
-            ext["jakarta-servlet.version"] = jakarta.get()
+//            ext["jakarta-servlet.version"] = jakarta.get()
             implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${jackson.get()}")
             implementation("com.h2database:h2:${h2db.get()}")
             implementation("io.github.microutils:kotlin-logging:${klogging.get()}")
             implementation("org.flywaydb:flyway-core:${flyway.get()}")
+//            runtimeOnly("jakarta.servlet:jakarta.servlet-api:${jakarta.get()}")
+            compileOnly("jakarta.servlet:jakarta.servlet-api:6.0.0")
             implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlin.get()}")
             implementation("org.jetbrains.kotlin:kotlin-stdlib:${kotlin.get()}")
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlinx.get()}")
@@ -40,11 +43,12 @@ allprojects {
             implementation("org.springframework.boot:spring-boot-starter-validation:${springboot.get()}")
             implementation("org.springframework.boot:spring-boot-starter-web:${springboot.get()}")
             implementation("org.springframework.boot:spring-boot-starter-jetty:${springboot.get()}")
-            modules {
-                module("org.springframework.boot:spring-boot-starter-tomcat") {
-                    replacedBy("org.springframework.boot:spring-boot-starter-jetty", "Use Jetty instead of Tomcat")
-                }
-            }
+//            modules {
+//                module("org.springframework.boot:spring-boot-starter-tomcat") {
+//                    replacedBy("org.springframework.boot:spring-boot-starter-jetty", "Use Jetty instead of Tomcat")
+//                }
+//            }
+//            compileOnly("jakarta.servlet:jakarta.servlet-api:6.0.0")
             implementation("org.yaml:snakeyaml:${snakeyaml.get()}")
             developmentOnly("org.springframework.boot:spring-boot-devtools")
             implementation("org.springdoc:springdoc-openapi-kotlin-tests:${swagger.get()}")
