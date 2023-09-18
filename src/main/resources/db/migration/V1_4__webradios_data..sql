@@ -16,5 +16,7 @@ insert into webradios (id, name, url, is_default)
 values (next value for hibernate_sequence, 'KINK', 'https://playerservices.streamtheworld.com/api/livestream-redirect/KINK.mp3', false);
 insert into webradios (id, name, url, is_default)
 values (next value for hibernate_sequence, 'Arrow Classic Rock', 'https://stream.player.arrow.nl/arrow', false);
+insert into webradios (id, name, url, is_default)
+values (next value for hibernate_sequence, 'Joe', 'https://stream.joe.nl/joe/mp3', false);
 
 commit;
