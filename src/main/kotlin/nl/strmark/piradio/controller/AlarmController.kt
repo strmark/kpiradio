@@ -38,13 +38,6 @@ class AlarmController(
     private val webRadioRepository: WebRadioRepository,
     private val scheduler: Scheduler
 ) {
-    companion object {
-        private val logger = KotlinLogging.logger {}
-        private const val ALARM = "Alarm"
-        private const val ALARM_JOBS = "Alarm-jobs"
-        private const val PI_RADIO = "PiRadio_"
-    }
-
     @GetMapping("/alarms")
     fun findAll(): MutableList<Alarm?> = alarmRepository.findAll()
 
@@ -53,7 +46,8 @@ class AlarmController(
 
     @GetMapping(path = ["/alarms/{id}"])
     fun findById(@PathVariable(value = "id") alarmId: Int): Alarm? =
-        alarmRepository.findById(alarmId).orElseThrow { ResourceNotFoundException(ALARM, "id", alarmId) }
+        alarmRepository.findById(alarmId)
+            .orElseThrow { ResourceNotFoundException(ALARM, "id", alarmId) }
 
     @PutMapping(path = ["/alarms/{id}"])
     fun updateAlarm(
@@ -61,46 +55,38 @@ class AlarmController(
         @RequestBody alarmDetails: Alarm
     ): Alarm? {
         assert(alarmDetails.id == alarmId)
-        val alarm: Alarm? = alarmRepository.findById(alarmId)
+        alarmRepository.findById(alarmId)
             .orElseThrow { ResourceNotFoundException(ALARM, "id", alarmId) }
-
-        return when {
-            alarm != null -> {
+            ?.let { alarm ->
                 scheduleAlarm(
                     alarmDetails.webRadio,
                     alarmDetails.isActive,
                     alarmDetails.autoStopMinutes,
                     getCronSchedule(alarmDetails)
                 )
-                saveAlarm(alarm, alarmDetails)
-            }
-            else -> null
-        }
+                return saveAlarm(alarm, alarmDetails)
+            } ?: return null
     }
 
     @DeleteMapping(path = ["/alarms/{id}"])
-    fun deleteAlarm(@PathVariable(value = "id") alarmId: Int): ResponseEntity<Long> {
-        val alarm = alarmRepository.findById(alarmId)
+    fun deleteAlarm(@PathVariable(value = "id") alarmId: Int): ResponseEntity<Long> =
+        alarmRepository.findById(alarmId)
             .orElseThrow { ResourceNotFoundException(ALARM, "id", alarmId) }
-        try {
-            val jobKey = JobKey("PI_RADIO" + alarm?.webRadio, ALARM_JOBS)
-            when {
-                scheduler.checkExists(jobKey) -> {
-                    logger.info { "Delete schedule" }
-                    scheduler.deleteJob(jobKey)
+            ?.let { alarm ->
+                try {
+                    val jobKey = JobKey("PI_RADIO" + alarm.webRadio, ALARM_JOBS)
+                    when {
+                        scheduler.checkExists(jobKey) -> {
+                            logger.info { "Delete schedule" }
+                            scheduler.deleteJob(jobKey)
+                        }
+                    }
+                } catch (ex: SchedulerException) {
+                    logger.error { "Error scheduling Alarm $ex" }
                 }
-            }
-        } catch (ex: SchedulerException) {
-            logger.error { "Error scheduling Alarm $ex" }
-        }
-        return when {
-            alarm != null -> {
                 alarmRepository.delete(alarm)
                 ok().build()
-            }
-            else -> notFound().build()
-        }
-    }
+            } ?: notFound().build()
 
     private fun scheduleAlarm(webRadioId: Int, isActive: Boolean, autoStopMinutes: Int, cronSchedule: String) {
         try {
@@ -166,26 +152,21 @@ class AlarmController(
     private fun getCronSchedule(alarmDetails: Alarm?): String {
         // 0 45 6 ? * MON,TUE,WED,THU,FRI *
         val cronSchedule = "0 ${alarmDetails?.minute ?: 0} ${alarmDetails?.hour ?: 0} ? * "
-        var cronDays = ""
+        val cronDays: MutableList<String> = arrayListOf()
+
         when {
             alarmDetails != null -> {
-                cronDays += stringAppend(alarmDetails.monday, "MON")
-                cronDays += stringAppend(alarmDetails.tuesday, "TUE")
-                cronDays += stringAppend(alarmDetails.wednesday, "WED")
-                cronDays += stringAppend(alarmDetails.thursday, "THU")
-                cronDays += stringAppend(alarmDetails.friday, "FRI")
-                cronDays += stringAppend(alarmDetails.saturday, "SAT")
-                cronDays += stringAppend(alarmDetails.sunday, "SUN")
+                if(alarmDetails.monday) cronDays.add ( "MON")
+                if(alarmDetails.tuesday) cronDays.add ( "TUE")
+                if(alarmDetails.wednesday) cronDays.add ( "WED")
+                if(alarmDetails.thursday) cronDays.add ( "THU")
+                if(alarmDetails.friday) cronDays.add ( "FRI")
+                if(alarmDetails.saturday) cronDays.add ( "SAT")
+                if(alarmDetails.sunday) cronDays.add ( "SUN")
             }
         }
-        return "$cronSchedule$cronDays *"
+        return "$cronSchedule${cronDays.joinToString(",")} *"
     }
-
-    private fun stringAppend(isDay: Boolean, day: String): String =
-        when {
-            isDay -> day
-            else -> ""
-        }
 
     private fun buildJobDetail(alarmName: String, webRadio: Int, autoStopMinutes: Int, url: String?): JobDetail {
         val jobDataMap = JobDataMap()
@@ -200,13 +181,19 @@ class AlarmController(
             .build()
     }
 
-    private fun buildJobTrigger(jobDetail: JobDetail, cronSchedule: String, startAt: ZonedDateTime): Trigger {
-        return newTrigger()
+    private fun buildJobTrigger(jobDetail: JobDetail, cronSchedule: String, startAt: ZonedDateTime): Trigger =
+        newTrigger()
             .forJob(jobDetail)
             .withIdentity(jobDetail.key.name, "Alarm-triggers")
             .withDescription("Alarm Trigger")
             .startAt(Date.from(startAt.toInstant()))
             .withSchedule(CronScheduleBuilder.cronSchedule(cronSchedule))
             .build()
+
+    companion object {
+        private val logger = KotlinLogging.logger {}
+        private const val ALARM = "Alarm"
+        private const val ALARM_JOBS = "Alarm-jobs"
+        private const val PI_RADIO = "PiRadio_"
     }
 }

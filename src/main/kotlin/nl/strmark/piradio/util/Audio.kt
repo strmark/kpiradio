@@ -15,8 +15,7 @@ object Audio {
         val line = getOutputLine(device) ?: throw RuntimeException("$device output port not found")
         val opened = open(line)
         try {
-            val control =
-                getVolumeControl(line) ?: throw RuntimeException("Volume control not found in $device port: $line")
+            val control = getVolumeControl(line) ?: throw RuntimeException("Volume control not found in $device port: $line")
             control.value = value
         } finally {
             if (opened) line.close()
@@ -27,8 +26,7 @@ object Audio {
         val line = getOutputLine(device) ?: return null
         val opened = open(line)
         return try {
-            val control = getVolumeControl(line) ?: return null
-            control.value
+            getVolumeControl(line)?.value ?: return null
         } finally {
             if (opened) line.close()
         }
@@ -54,8 +52,9 @@ object Audio {
             when {
                 control.type == type -> return control
                 control is CompoundControl -> {
-                    val member = findControl(type, *control.memberControls)
-                    if (member != null) return member
+                    findControl(type, *control.memberControls).let { member ->
+                        if (member != null) return member
+                    }
                 }
             }
         }
@@ -63,22 +62,24 @@ object Audio {
     }
 
     private fun getMixers(): List<Mixer> {
-        val mixers = mutableListOf<Mixer>()
-        for (info in getMixerInfo()) {
-            mixers.add(getMixer(info))
+        mutableListOf<Mixer>().let { mixers ->
+            for (info in getMixerInfo()) {
+                mixers.add(getMixer(info))
+            }
+            return mixers
         }
-        return mixers
     }
 
     private fun getAvailableOutputLines(mixer: Mixer): List<Line?> =
         getAvailableLines(mixer, mixer.targetLineInfo)
 
     private fun getAvailableLines(mixer: Mixer, lineInfos: Array<Line.Info>): List<Line?> {
-        val lines = mutableListOf<Line?>()
-        for (lineInfo in lineInfos) {
-            getLineIfAvailable(mixer, lineInfo).let { line -> lines.add(line) }
+        mutableListOf<Line?>().let { lines ->
+            for (lineInfo in lineInfos) {
+                getLineIfAvailable(mixer, lineInfo).let { line -> lines.add(line) }
+            }
+            return lines
         }
-        return lines
     }
 
     private fun getLineIfAvailable(mixer: Mixer, lineInfo: Line.Info?): Line? =

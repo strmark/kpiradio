@@ -22,29 +22,30 @@ class VolumeController(private val objectMapper: ObjectMapper) {
     @Autowired
     private lateinit var piRadioProperties: PiRadioProperties
 
-    companion object {
-        private val logger = KotlinLogging.logger {}
-        private var volume = VolumeValue(50)
-    }
-
     @GetMapping(path = ["/volume"], produces = ["application/json"])
-    fun getVolume(): String {
-        val vol = getDeviceVolume()
-        volume = VolumeValue(roundValue(vol))
-        return objectMapper.writeValueAsString(volume)
-    }
+    fun getVolume(): String =
+        VolumeValue(roundValue(getDeviceVolume())).let { volume ->
+            objectMapper.writeValueAsString(volume)
+        }
+
 
     @PostMapping(path = ["/volume"], produces = ["application/json"])
     fun updateVolume(@RequestBody request: VolumeRequest): String {
         val vol = request.volume.toFloat() / 100
-        volume = VolumeValue(roundValue(request.volume))
-        logger.info { "Volume $vol" }
-        setOutputVolume(piRadioProperties.device, vol)
-        return objectMapper.writeValueAsString(volume)
+        VolumeValue(roundValue(request.volume)).let { volume ->
+            logger.info { "Volume $vol" }
+            setOutputVolume(piRadioProperties.device, vol)
+            return objectMapper.writeValueAsString(volume)
+        }
     }
 
     private fun getDeviceVolume() =
         ceil(((getOutputVolume(piRadioProperties.device) ?: piRadioProperties.volume).times(100f))).toInt()
 
     private fun roundValue(volume: Int) = volume.coerceAtLeast(0).coerceAtMost(100)
+
+    companion object {
+        private val logger = KotlinLogging.logger {}
+        private var volume = VolumeValue(50)
+    }
 }

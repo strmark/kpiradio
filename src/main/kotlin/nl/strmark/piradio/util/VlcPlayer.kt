@@ -9,16 +9,13 @@ import java.util.concurrent.TimeUnit
 @Component
 class VlcPlayer {
 
-    companion object {
-        private val logger = KotlinLogging.logger {}
-    }
-
     @Autowired
     private lateinit var piRadioProperties: PiRadioProperties
 
     private var vlcPlayerProcess: Process? = null
 
     fun open(url: String, autoStopMinutes: Long) {
+        logger.info("url; $url")
         when {
             vlcPlayerProcess != null -> {
                 stopVlcPlayer()
@@ -26,7 +23,7 @@ class VlcPlayer {
             }
             else -> {
                 // start VlcPlayer as an external process
-                val command = "${piRadioProperties.vlc.player.path} $url"
+                val command = arrayOf(piRadioProperties.vlc.player.path, url)
                 logger.info { "Starting VlcPlayer process: $command" }
                 vlcPlayerProcess = Runtime.getRuntime().exec(command)
                 when {
@@ -43,5 +40,9 @@ class VlcPlayer {
     fun stopVlcPlayer() {
         vlcPlayerProcess?.destroy()
         vlcPlayerProcess = null
+    }
+
+    companion object {
+        private val logger = KotlinLogging.logger {}
     }
 }

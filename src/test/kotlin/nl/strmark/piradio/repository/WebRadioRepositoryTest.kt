@@ -14,8 +14,7 @@ class WebRadioRepositoryTest(@Autowired val webRadioRepository: WebRadioReposito
         val radio = WebRadio(
             id = 1,
             name = "test",
-            url = "http://test",
-            isDefault = false
+            url = "http://test"
         )
         val saved = webRadioRepository.save(radio)
 

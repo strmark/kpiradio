@@ -19,10 +19,6 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/")
 class WebRadioController(private val webRadioRepository: WebRadioRepository) {
 
-    companion object {
-        private const val WEBRADIO = "WebRadio"
-    }
-
     @GetMapping("/webRadio")
     fun findAll(): MutableList<WebRadio?> = webRadioRepository.findAll()
 
@@ -31,36 +27,33 @@ class WebRadioController(private val webRadioRepository: WebRadioRepository) {
 
     @GetMapping("/webRadio/{id}")
     fun findById(@PathVariable(value = "id") webRadioId: Int): WebRadio? =
-        webRadioRepository.findById(webRadioId).orElseThrow { ResourceNotFoundException(WEBRADIO, "id", webRadioId) }
+        webRadioRepository.findById(webRadioId)
+            .orElseThrow { ResourceNotFoundException(WEBRADIO, "id", webRadioId) }
 
     @PutMapping("/webRadio/{id}")
     fun saveWebRadio(
         @PathVariable(value = "id") webRadioId: Int,
         @RequestBody webRadioRequest: WebRadio
-    ): WebRadio? {
-        val webRadio = webRadioRepository.findById(webRadioId)
+    ): WebRadio? =
+        webRadioRepository.findById(webRadioId)
             .orElseThrow { ResourceNotFoundException(WEBRADIO, "id", webRadioId) }
-        return when {
-            webRadio != null -> {
+            ?.let { webRadio ->
                 webRadio.name = webRadioRequest.name
                 webRadio.url = webRadioRequest.url
-                webRadio.isDefault = webRadioRequest.isDefault
                 webRadioRepository.save(webRadio)
             }
-            else -> null
-        }
-    }
+
 
     @DeleteMapping("/webRadio/{id}")
-    fun deleteWebRadio(@PathVariable(value = "id") webRadioId: Int): ResponseEntity<Long> {
-        val webRadio = webRadioRepository.findById(webRadioId)
+    fun deleteWebRadio(@PathVariable(value = "id") webRadioId: Int): ResponseEntity<Long> =
+        webRadioRepository.findById(webRadioId)
             .orElseThrow { ResourceNotFoundException(WEBRADIO, "id", webRadioId) }
-        return when {
-            webRadio != null -> {
+            ?.let { webRadio ->
                 webRadioRepository.delete(webRadio)
                 ResponseEntity.ok().build()
-            }
-            else -> ResponseEntity.notFound().build()
-        }
+            } ?: ResponseEntity.notFound().build()
+
+    companion object {
+        private const val WEBRADIO = "WebRadio"
     }
 }

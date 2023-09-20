@@ -18,8 +18,5 @@ class WebRadio(
     var name: String,
 
     @Column(length = 255, nullable = false)
-    var url: String,
-
-    @Column(name = "is_default", nullable = false)
-    var isDefault: Boolean
+    var url: String
 )

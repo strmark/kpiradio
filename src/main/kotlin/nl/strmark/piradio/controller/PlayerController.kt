@@ -2,9 +2,10 @@ package nl.strmark.piradio.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import mu.KotlinLogging
-import nl.strmark.piradio.entity.WebRadio
+import nl.strmark.piradio.entity.DefaultWebRadio
 import nl.strmark.piradio.payload.PlayerRequest
 import nl.strmark.piradio.payload.PlayerStatus
+import nl.strmark.piradio.repository.DefaultWebradioRepository
 import nl.strmark.piradio.repository.WebRadioRepository
 import nl.strmark.piradio.util.VlcPlayer
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -13,10 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
+
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 @RestController
 class PlayerController(
     private val webRadioRepository: WebRadioRepository,
+    private val defaultWebradioRepository: DefaultWebradioRepository,
     private val vlcPlayer: VlcPlayer,
     private val objectMapper: ObjectMapper
 ) {
@@ -63,47 +66,25 @@ class PlayerController(
     private fun startPlayer(webRadioId: Int?, autoStopMinutes: Int?): String {
         logger.info { "WebRadio: id = $webRadioId" }
         logger.info { "WebRadio: autoStop = $autoStopMinutes" }
-        val url: String? = when (webRadioId) {
-            0 -> getWebRadioUrl(webRadioRepository.findAll().requireNoNulls())
-            else -> {
-                webRadioRepository
-                    .findAll()
-                    .map { webRadio: WebRadio? ->
-                        when {
-                            webRadio != null -> webRadioId?.let { setDefaultAndSave(it, webRadio) }
-                            else -> null
-                        }
+        val url = webRadioId?.let { id ->
+            when (id) {
+                0 ->
+                    defaultWebradioRepository.findAll().first()?.webRadioId.let { webRadioId ->
+                        if (webRadioId != null) webRadioRepository.findById(webRadioId).get().url
+                        else null
                     }
-                    .joinToString()
+                else ->
+                    webRadioRepository.findById(webRadioId).get().let { webRadio ->
+                        setDefaultWebRadio(webRadioId)
+                        webRadio.url
+                    }
             }
         }
         return startPlayer(url, autoStopMinutes)
     }
 
-    private fun setDefaultAndSave(webRadioId: Int, webRadio: WebRadio): String? {
-        when {
-            webRadio.isDefault -> {
-                when (webRadio.id) {
-                    webRadioId -> {
-                        webRadio.isDefault = true
-                        webRadioRepository.save(webRadio)
-                        return webRadio.url
-                    }
-                    else -> {
-                        webRadio.isDefault = false
-                        webRadioRepository.save(webRadio)
-                    }
-                }
-            }
-            webRadio.id == webRadioId -> {
-                webRadio.isDefault = true
-                webRadioRepository.save(webRadio)
-                return webRadio.url
-            }
-        }
-        return null
+    private fun setDefaultWebRadio(webRadioId: Int) {
+        defaultWebradioRepository.deleteAll()
+        defaultWebradioRepository.save(DefaultWebRadio(1, webRadioId))
     }
-
-    private fun getWebRadioUrl(webRadioList: List<WebRadio>): String? =
-        webRadioList.firstOrNull(WebRadio::isDefault)?.url
 }
