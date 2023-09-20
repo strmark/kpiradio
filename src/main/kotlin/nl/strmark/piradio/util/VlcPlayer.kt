@@ -24,13 +24,10 @@ class VlcPlayer {
             else -> {
                 // start VlcPlayer as an external process
                 val command = arrayOf(piRadioProperties.vlc.player.path, url)
-                logger.info { "Starting VlcPlayer process: $command" }
+                logger.info { "Starting VlcPlayer process: ${command.joinToString { " " }}" }
                 vlcPlayerProcess = Runtime.getRuntime().exec(command)
                 when {
-                    autoStopMinutes > 0 && vlcPlayerProcess?.waitFor(
-                        autoStopMinutes,
-                        TimeUnit.MINUTES
-                    ) == false -> stopVlcPlayer()
+                    autoStopMinutes > 0 && vlcPlayerProcess?.waitFor(autoStopMinutes, TimeUnit.MINUTES) == false -> stopVlcPlayer()
                 }
             }
         }

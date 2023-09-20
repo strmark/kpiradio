@@ -43,7 +43,6 @@ class WebRadioController(private val webRadioRepository: WebRadioRepository) {
                 webRadioRepository.save(webRadio)
             }
 
-
     @DeleteMapping("/webRadio/{id}")
     fun deleteWebRadio(@PathVariable(value = "id") webRadioId: Int): ResponseEntity<Long> =
         webRadioRepository.findById(webRadioId)

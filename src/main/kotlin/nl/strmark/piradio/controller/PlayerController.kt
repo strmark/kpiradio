@@ -23,10 +23,6 @@ class PlayerController(
     private val vlcPlayer: VlcPlayer,
     private val objectMapper: ObjectMapper
 ) {
-    companion object {
-        private val logger = KotlinLogging.logger {}
-        private var status = PlayerStatus("off")
-    }
 
     @GetMapping(path = ["/player"], produces = ["application/json"])
     fun get(): String = objectMapper.writeValueAsString(status)
@@ -69,9 +65,8 @@ class PlayerController(
         val url = webRadioId?.let { id ->
             when (id) {
                 0 ->
-                    defaultWebradioRepository.findAll().first()?.webRadioId.let { webRadioId ->
-                        if (webRadioId != null) webRadioRepository.findById(webRadioId).get().url
-                        else null
+                    defaultWebradioRepository.findAll().first()?.webRadioId?.let { webRadioId ->
+                        webRadioRepository.findById(webRadioId).get().url
                     }
                 else ->
                     webRadioRepository.findById(webRadioId).get().let { webRadio ->
@@ -86,5 +81,10 @@ class PlayerController(
     private fun setDefaultWebRadio(webRadioId: Int) {
         defaultWebradioRepository.deleteAll()
         defaultWebradioRepository.save(DefaultWebRadio(1, webRadioId))
+    }
+
+    companion object {
+        private val logger = KotlinLogging.logger {}
+        private var status = PlayerStatus("off")
     }
 }

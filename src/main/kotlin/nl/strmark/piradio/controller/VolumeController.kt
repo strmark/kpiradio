@@ -28,7 +28,6 @@ class VolumeController(private val objectMapper: ObjectMapper) {
             objectMapper.writeValueAsString(volume)
         }
 
-
     @PostMapping(path = ["/volume"], produces = ["application/json"])
     fun updateVolume(@RequestBody request: VolumeRequest): String {
         val vol = request.volume.toFloat() / 100
@@ -46,6 +45,5 @@ class VolumeController(private val objectMapper: ObjectMapper) {
 
     companion object {
         private val logger = KotlinLogging.logger {}
-        private var volume = VolumeValue(50)
     }
 }

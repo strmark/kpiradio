@@ -18,6 +18,7 @@ class AlarmJob(private val playerController: PlayerController) : QuartzJobBean()
             playerController.startPlayer(jobDataMap.getString("url"), jobDataMap.getInt("autoStopMinutes"))
         }
     }
+
     companion object {
         private val logger = KotlinLogging.logger {}
     }

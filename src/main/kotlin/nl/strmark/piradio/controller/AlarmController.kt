@@ -55,7 +55,7 @@ class AlarmController(
         @RequestBody alarmDetails: Alarm
     ): Alarm? {
         assert(alarmDetails.id == alarmId)
-        alarmRepository.findById(alarmId)
+        return alarmRepository.findById(alarmId)
             .orElseThrow { ResourceNotFoundException(ALARM, "id", alarmId) }
             ?.let { alarm ->
                 scheduleAlarm(
@@ -64,8 +64,8 @@ class AlarmController(
                     alarmDetails.autoStopMinutes,
                     getCronSchedule(alarmDetails)
                 )
-                return saveAlarm(alarm, alarmDetails)
-            } ?: return null
+                saveAlarm(alarm, alarmDetails)
+            }
     }
 
     @DeleteMapping(path = ["/alarms/{id}"])
