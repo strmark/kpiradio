@@ -2,18 +2,11 @@ package nl.strmark.piradio.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import mu.KotlinLogging
-import nl.strmark.piradio.payload.VolumeRequest
-import nl.strmark.piradio.payload.VolumeValue
 import nl.strmark.piradio.properties.PiRadioProperties
-import nl.strmark.piradio.util.Audio.getOutputVolume
-import nl.strmark.piradio.util.Audio.setOutputVolume
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-import kotlin.math.ceil
 
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 @RestController
@@ -22,28 +15,26 @@ class VolumeController(private val objectMapper: ObjectMapper) {
     @Autowired
     private lateinit var piRadioProperties: PiRadioProperties
 
-    @GetMapping(path = ["/volume"], produces = ["application/json"])
-    fun getVolume(): String =
-        VolumeValue(roundValue(getDeviceVolume())).let { volume ->
-            objectMapper.writeValueAsString(volume)
-        }
-
-    @PostMapping(path = ["/volume"], produces = ["application/json"])
-    fun updateVolume(@RequestBody request: VolumeRequest): String {
-        val vol = request.volume.toFloat() / 100
-        VolumeValue(roundValue(request.volume)).let { volume ->
-            logger.info { "Volume $vol" }
-            setOutputVolume(piRadioProperties.device, vol)
-            return objectMapper.writeValueAsString(volume)
-        }
+    @PostMapping(path = ["/volumeDown"], produces = ["application/json"])
+    fun vVolumeDown(): String {
+        setDeviceVolume(piRadioProperties.amixer.steps + "-")
+        return objectMapper.writeValueAsString("Volume down")
     }
 
-    private fun getDeviceVolume() =
-        ceil(((getOutputVolume(piRadioProperties.device) ?: piRadioProperties.volume).times(100f))).toInt()
+    @PostMapping(path = ["/volumeUp"], produces = ["application/json"])
+    fun volumeUp(): String {
+        setDeviceVolume(piRadioProperties.amixer.steps + "+")
+        return objectMapper.writeValueAsString("Volume up")
+    }
 
-    private fun roundValue(volume: Int) = volume.coerceAtLeast(0).coerceAtMost(100)
+    private fun setDeviceVolume(volume: String) {
+        val command = arrayOf(piRadioProperties.amixer.amixer, sset, piRadioProperties.amixer.device, volume)
+        logger.info { "Update volume with command: ${command.joinToString(" ")}" }
+        Runtime.getRuntime().exec(command)
+    }
 
     companion object {
         private val logger = KotlinLogging.logger {}
+        const val sset = "sset"
     }
 }

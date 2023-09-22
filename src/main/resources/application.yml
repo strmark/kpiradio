@@ -47,10 +47,3 @@ springdoc:
   group-configs:
     - group: piradio
       paths-to-match: /**
-
-piradio:
-  volume: 75f
-  device: "Master"
-  vlc:
-    player:
-      path: "/usr/bin/cvlc"
