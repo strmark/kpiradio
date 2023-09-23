@@ -5,7 +5,6 @@ plugins {
     with(kpiLibs.versions) {
         id("org.springframework.boot") version springboot
         id("io.spring.dependency-management") version dependencymanagement
-        id("org.flywaydb.flyway") version flyway
         id("com.github.ben-manes.versions") version manes
         id("org.sonarqube") version sonarqube
         id("org.owasp.dependencycheck") version owasp
@@ -77,13 +76,6 @@ tasks.withType<DependencyUpdatesTask> {
     rejectVersionIf {
         isNonStable(candidate.version) && !isNonStable(currentVersion)
     }
-}
-
-flyway {
-    url = "jdbc:h2:file:./database/piradio"
-    user = "pi"
-    password = "pi"
-    ignoreMigrationPatterns = listOf("repeatable:missing").toTypedArray()
 }
 
 sonarqube {
