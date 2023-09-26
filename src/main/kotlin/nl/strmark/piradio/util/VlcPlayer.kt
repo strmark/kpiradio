@@ -4,7 +4,7 @@ import mu.KotlinLogging
 import nl.strmark.piradio.properties.PiRadioProperties
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeUnit.MINUTES
 
 @Component
 class VlcPlayer {
@@ -27,7 +27,7 @@ class VlcPlayer {
                 logger.info { "Starting VlcPlayer process: ${command.joinToString { " " }}" }
                 vlcPlayerProcess = Runtime.getRuntime().exec(command)
                 when {
-                    autoStopMinutes > 0 && vlcPlayerProcess?.waitFor(autoStopMinutes, TimeUnit.MINUTES) == false -> stopVlcPlayer()
+                    autoStopMinutes > 0 && vlcPlayerProcess?.waitFor(autoStopMinutes, MINUTES) == false -> stopVlcPlayer()
                 }
             }
         }

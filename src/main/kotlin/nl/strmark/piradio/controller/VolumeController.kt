@@ -28,13 +28,13 @@ class VolumeController(private val objectMapper: ObjectMapper) {
     }
 
     private fun setDeviceVolume(volume: String) {
-        val command = arrayOf(piRadioProperties.amixer.amixer, sset, piRadioProperties.amixer.device, volume)
+        val command = arrayOf(piRadioProperties.amixer.amixer, SSET, piRadioProperties.amixer.device, volume)
         logger.info { "Update volume with command: ${command.joinToString(" ")}" }
         Runtime.getRuntime().exec(command)
     }
 
     companion object {
         private val logger = KotlinLogging.logger {}
-        const val sset = "sset"
+        const val SSET = "sset"
     }
 }

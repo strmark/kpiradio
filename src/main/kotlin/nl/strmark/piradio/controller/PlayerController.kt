@@ -62,21 +62,16 @@ class PlayerController(
     private fun startPlayer(webRadioId: Int?, autoStopMinutes: Int?): String {
         logger.info { "WebRadio: id = $webRadioId" }
         logger.info { "WebRadio: autoStop = $autoStopMinutes" }
-        val url = webRadioId?.let { id ->
-            when (id) {
-                0 ->
-                    defaultWebradioRepository.findAll().first()?.webRadioId?.let { webRadioId ->
-                        webRadioRepository.findById(webRadioId).get().url
-                    }
-                else ->
-                    webRadioRepository.findById(webRadioId).get().let { webRadio ->
-                        setDefaultWebRadio(webRadioId)
-                        webRadio.url
-                    }
+        return startPlayer(getUrl(webRadioId), autoStopMinutes)
+    }
+
+    private fun getUrl(webRadioId: Int?) =
+        webRadioId?.let { webradio ->
+            when (webradio) {
+                0 -> defaultWebradioRepository.findAll().first()?.webRadioId?.let { webRadioRepository.findById(it).get().url }
+                else -> webRadioRepository.findById(webradio).get().let { setDefaultWebRadio(it.id); it.url }
             }
         }
-        return startPlayer(url, autoStopMinutes)
-    }
 
     private fun setDefaultWebRadio(webRadioId: Int) {
         defaultWebradioRepository.deleteAll()

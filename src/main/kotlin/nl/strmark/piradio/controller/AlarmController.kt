@@ -74,9 +74,8 @@ class AlarmController(
             .orElseThrow { ResourceNotFoundException(ALARM, "id", alarmId) }
             ?.let { alarm ->
                 try {
-                    val jobKey = JobKey("PI_RADIO" + alarm.webRadio, ALARM_JOBS)
-                    when {
-                        scheduler.checkExists(jobKey) -> {
+                    JobKey("PI_RADIO" + alarm.webRadio, ALARM_JOBS).let { jobKey ->
+                        if (scheduler.checkExists(jobKey)) {
                             logger.info { "Delete schedule" }
                             scheduler.deleteJob(jobKey)
                         }
@@ -92,43 +91,22 @@ class AlarmController(
         try {
             val webRadioOptional = webRadioRepository.findById(webRadioId)
             var webRadio: WebRadio? = null
-            when {
-                webRadioOptional.isPresent -> webRadio = webRadioOptional.get()
-            }
-            val jobKey = JobKey(PI_RADIO + webRadioId, ALARM_JOBS)
-            when {
-                scheduler.checkExists(jobKey) -> {
+            if (webRadioOptional.isPresent) webRadio = webRadioOptional.get()
+            JobKey(PI_RADIO + webRadioId, ALARM_JOBS).let { jobKey ->
+                if (scheduler.checkExists(jobKey)) {
                     logger.info { "Already exists" }
                     scheduler.deleteJob(jobKey)
                 }
             }
-            when {
-                isActive -> {
-                    val jobDetail = buildJobDetail(
-                        PI_RADIO + webRadioId,
-                        webRadioId,
-                        autoStopMinutes,
-                        when {
-                            webRadio != null -> webRadio.url
-                            else -> "dummy"
-                        }
-                    )
-                    val trigger = buildJobTrigger(jobDetail, cronSchedule, ZonedDateTime.now())
-                    scheduler.scheduleJob(jobDetail, trigger)
-                    ScheduleAlarmResponse(
-                        true,
-                        jobDetail.key.name,
-                        jobDetail.key.group,
-                        "Alarm Scheduled Successfully!"
-                    )
+            if (isActive) {
+                buildJobDetail(PI_RADIO + webRadioId, webRadioId, autoStopMinutes, webRadio?.url ?: "dummy").let { jobDetail ->
+                    buildJobTrigger(jobDetail, cronSchedule, ZonedDateTime.now()).let { scheduler.scheduleJob(jobDetail, it) }
+                    ScheduleAlarmResponse(true, jobDetail.key.name, jobDetail.key.group, "Alarm Scheduled Successfully!")
                 }
             }
         } catch (ex: SchedulerException) {
             logger.error { "Error scheduling Alarm $ex" }
-            ScheduleAlarmResponse(
-                false,
-                "Error scheduling Alarm. Please try later!",
-            )
+            ScheduleAlarmResponse(false, "Error scheduling Alarm. Please try later!")
         }
     }
 
@@ -154,18 +132,24 @@ class AlarmController(
         val cronSchedule = "0 ${alarmDetails?.minute ?: 0} ${alarmDetails?.hour ?: 0} ? * "
         val cronDays: MutableList<String> = arrayListOf()
 
-        when {
-            alarmDetails != null -> {
-                if(alarmDetails.monday) cronDays.add ( "MON")
-                if(alarmDetails.tuesday) cronDays.add ( "TUE")
-                if(alarmDetails.wednesday) cronDays.add ( "WED")
-                if(alarmDetails.thursday) cronDays.add ( "THU")
-                if(alarmDetails.friday) cronDays.add ( "FRI")
-                if(alarmDetails.saturday) cronDays.add ( "SAT")
-                if(alarmDetails.sunday) cronDays.add ( "SUN")
-            }
+        alarmDetails?.let { alarm ->
+            addToCronDays(alarm.monday, "MON", cronDays)
+            addToCronDays(alarm.tuesday, "TUE", cronDays)
+            addToCronDays(alarm.wednesday, "WED", cronDays)
+            addToCronDays(alarm.thursday, "THU", cronDays)
+            addToCronDays(alarm.friday, "FRI", cronDays)
+            addToCronDays(alarm.saturday, "SAT", cronDays)
+            addToCronDays(alarm.sunday, "SUN", cronDays)
         }
+
+        logger.info("$cronSchedule${cronDays.joinToString(",")} *")
         return "$cronSchedule${cronDays.joinToString(",")} *"
+    }
+
+    private fun addToCronDays(alarm: Boolean, day: String, cronDays: MutableList<String>) {
+        when {
+            alarm -> cronDays.add(day)
+        }
     }
 
     private fun buildJobDetail(alarmName: String, webRadio: Int, autoStopMinutes: Int, url: String?): JobDetail {
