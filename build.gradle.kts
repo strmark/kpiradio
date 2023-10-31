@@ -88,6 +88,7 @@ sonarqube {
 
 dependencyCheck {
     analyzers.assemblyEnabled = false
+    analyzers.retirejs.enabled = false
 }
 
 fun isNonStable(version: String): Boolean {
