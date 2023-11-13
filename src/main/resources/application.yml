@@ -15,14 +15,6 @@ spring:
         ddl-auto: update
     show-sql: true
   # defer-datasource-initialization: false
-  ## QuartzProperties
-  quartz:
-    job-store-type: jdbc
-    properties:
-      org:
-        quartz:
-          threadPool:
-            threadCount: 5
   flyway:
     locations: classpath:db/migration/
     baselineOnMigrate: true
@@ -31,6 +23,18 @@ spring:
 
 server:
   port: 8000
+
+org:
+  jobrunr:
+    background-job-server:
+      enabled: true
+    dashboard:
+      enabled: true
+      port: 8001
+    database:
+      skip-create: false
+      migration.username: pi
+      migration.password: pi
 
 springdoc:
   api-docs:

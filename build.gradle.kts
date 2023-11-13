@@ -34,8 +34,6 @@ allprojects {
             implementation("org.jetbrains.kotlin:kotlin-stdlib:${kotlin.get()}")
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlinx.get()}")
             implementation("org.springframework.boot:spring-boot-starter-data-jpa:${springboot.get()}")
-            implementation("org.springframework.boot:spring-boot-starter-jetty:${springboot.get()}")
-            implementation("org.springframework.boot:spring-boot-starter-quartz:${springboot.get()}")
             implementation("org.springframework.boot:spring-boot-starter-validation:${springboot.get()}")
             implementation("org.springframework.boot:spring-boot-starter-web:${springboot.get()}")
             implementation("org.springframework.boot:spring-boot-starter-jetty:${springboot.get()}")
@@ -46,6 +44,7 @@ allprojects {
             }
             runtimeOnly("jakarta.servlet:jakarta.servlet-api:${jakarta.get()}")
             testImplementation("jakarta.servlet:jakarta.servlet-api:${jakartatest.get()}")
+            implementation("org.jobrunr:jobrunr-spring-boot-3-starter:${jobrunr.get()}")
             implementation("org.yaml:snakeyaml:${snakeyaml.get()}")
             developmentOnly("org.springframework.boot:spring-boot-devtools")
             implementation("org.springdoc:springdoc-openapi-kotlin-tests:${swagger.get()}")

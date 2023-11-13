@@ -1,11 +1,12 @@
 [versions]
-dependencymanagement = "1.1.3"
+dependencymanagement = "1.1.4"
 flyway = "9.22.3"
 h2db = "2.2.224"
 jackson = "2.15.3"
 jakarta = "5.0.0"
 jakartatest = "6.0.0"
 jetty = "11.0.15"
+jobrunr = "6.3.2"
 junit = "5.10.1"
 klogging = "3.0.5"
 kotlin = "1.9.20"
