@@ -29,6 +29,7 @@ allprojects {
             implementation("com.h2database:h2:${h2db.get()}")
             implementation("io.github.microutils:kotlin-logging:${klogging.get()}")
             implementation("org.flywaydb:flyway-core:${flyway.get()}")
+            implementation("org.flywaydb:flyway-community-db-support:${flyway.get()}")
             implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlin.get()}")
             implementation("org.jetbrains.kotlin:kotlin-stdlib:${kotlin.get()}")
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlinx.get()}")
@@ -42,10 +43,11 @@ allprojects {
                 }
             }
             implementation("org.jobrunr:jobrunr-spring-boot-3-starter:${jobrunr.get()}")
-            implementation("org.yaml:snakeyaml:${snakeyaml.get()}")
-            developmentOnly("org.springframework.boot:spring-boot-devtools")
             implementation("org.springdoc:springdoc-openapi-kotlin-tests:${swagger.get()}")
             implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${swagger.get()}")
+            implementation("org.yaml:snakeyaml:${snakeyaml.get()}")
+
+            developmentOnly("org.springframework.boot:spring-boot-devtools")
             testCompileOnly("org.junit.jupiter:junit-jupiter-api:${junit.get()}")
             testCompileOnly("org.junit.jupiter:junit-jupiter-engine:${junit.get()}")
             testImplementation("org.springframework.boot:spring-boot-starter-test:${springboot.get()}")
