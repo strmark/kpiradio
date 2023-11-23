@@ -17,7 +17,7 @@ plugins {
 allprojects {
     group = "nl.strmark"
     version = "0.0.1-SNAPSHOT"
-    java.sourceCompatibility = JavaVersion.VERSION_17
+    java.sourceCompatibility = JavaVersion.VERSION_21
 
     repositories {
         mavenCentral()
@@ -25,7 +25,6 @@ allprojects {
 
     with(kpiLibs.versions) {
         dependencies {
-            ext["jakarta-servlet.version"] = jakarta.get()
             implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${jackson.get()}")
             implementation("com.h2database:h2:${h2db.get()}")
             implementation("io.github.microutils:kotlin-logging:${klogging.get()}")
@@ -44,8 +43,6 @@ allprojects {
                     replacedBy("org.springframework.boot:spring-boot-starter-jetty", "Use Jetty instead of Tomcat")
                 }
             }
-            runtimeOnly("jakarta.servlet:jakarta.servlet-api:${jakarta.get()}")
-            testImplementation("jakarta.servlet:jakarta.servlet-api:${jakartatest.get()}")
             implementation("org.yaml:snakeyaml:${snakeyaml.get()}")
             developmentOnly("org.springframework.boot:spring-boot-devtools")
             implementation("org.springdoc:springdoc-openapi-kotlin-tests:${swagger.get()}")
@@ -60,7 +57,7 @@ allprojects {
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "17"
+        jvmTarget = "21"
     }
 }
 
