@@ -25,7 +25,6 @@ allprojects {
 
     with(kpiLibs.versions) {
         dependencies {
-            ext["jakarta-servlet.version"] = jakarta.get()
             implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${jackson.get()}")
             implementation("com.h2database:h2:${h2db.get()}")
             implementation("io.github.microutils:kotlin-logging:${klogging.get()}")
@@ -42,8 +41,6 @@ allprojects {
                     replacedBy("org.springframework.boot:spring-boot-starter-jetty", "Use Jetty instead of Tomcat")
                 }
             }
-            runtimeOnly("jakarta.servlet:jakarta.servlet-api:${jakarta.get()}")
-            testImplementation("jakarta.servlet:jakarta.servlet-api:${jakartatest.get()}")
             implementation("org.jobrunr:jobrunr-spring-boot-3-starter:${jobrunr.get()}")
             implementation("org.yaml:snakeyaml:${snakeyaml.get()}")
             developmentOnly("org.springframework.boot:spring-boot-devtools")
