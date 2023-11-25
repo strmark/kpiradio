@@ -34,7 +34,6 @@ allprojects {
             implementation("org.jetbrains.kotlin:kotlin-stdlib:${kotlin.get()}")
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlinx.get()}")
             implementation("org.springframework.boot:spring-boot-starter-data-jpa:${springboot.get()}")
-            implementation("org.springframework.boot:spring-boot-starter-jetty:${springboot.get()}")
             implementation("org.springframework.boot:spring-boot-starter-quartz:${springboot.get()}")
             implementation("org.springframework.boot:spring-boot-starter-validation:${springboot.get()}")
             implementation("org.springframework.boot:spring-boot-starter-web:${springboot.get()}")
