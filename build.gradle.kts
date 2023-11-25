@@ -29,6 +29,7 @@ allprojects {
             implementation("com.h2database:h2:${h2db.get()}")
             implementation("io.github.microutils:kotlin-logging:${klogging.get()}")
             implementation("org.flywaydb:flyway-core:${flyway.get()}")
+            implementation("org.flywaydb:flyway-community-db-support:${flyway.get()}")
             implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlin.get()}")
             implementation("org.jetbrains.kotlin:kotlin-stdlib:${kotlin.get()}")
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlinx.get()}")
