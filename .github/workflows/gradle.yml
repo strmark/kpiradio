@@ -26,6 +26,3 @@ jobs:
       run: ls -l ./database/piradio.*
     - name: Build with Gradle
       run: ./gradlew build -x test
-#   dependency check not compatible with java 21.0.1
-#    - name: Build dependencyCheck
-#      run: ./gradlew dependencyCheckAnalyze

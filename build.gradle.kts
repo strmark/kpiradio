@@ -7,7 +7,6 @@ plugins {
         id("io.spring.dependency-management") version dependencymanagement
         id("com.github.ben-manes.versions") version manes
         id("org.sonarqube") version sonarqube
-        id("org.owasp.dependencycheck") version owasp
         kotlin("jvm") version kotlin
         kotlin("plugin.spring") version kotlin
         kotlin("plugin.jpa") version kotlin
@@ -34,7 +33,6 @@ allprojects {
             implementation("org.jetbrains.kotlin:kotlin-stdlib:${kotlin.get()}")
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlinx.get()}")
             implementation("org.springframework.boot:spring-boot-starter-data-jpa:${springboot.get()}")
-            implementation("org.springframework.boot:spring-boot-starter-quartz:${springboot.get()}")
             implementation("org.springframework.boot:spring-boot-starter-validation:${springboot.get()}")
             implementation("org.springframework.boot:spring-boot-starter-web:${springboot.get()}")
             implementation("org.springframework.boot:spring-boot-starter-jetty:${springboot.get()}")
@@ -83,11 +81,6 @@ sonarqube {
         property("sonar.organization", "strmark")
         property("sonar.projectKey", "strmark_kpiradio")
     }
-}
-
-dependencyCheck {
-    analyzers.assemblyEnabled = false
-    analyzers.retirejs.enabled = false
 }
 
 fun isNonStable(version: String): Boolean {
