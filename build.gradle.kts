@@ -26,7 +26,7 @@ allprojects {
         dependencies {
             implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${jackson.get()}")
             implementation("com.h2database:h2:${h2db.get()}")
-            implementation("io.github.microutils:kotlin-logging:${klogging.get()}")
+            implementation("io.github.oshai:kotlin-logging-jvm:${klogging.get()}")
             implementation("org.flywaydb:flyway-core:${flyway.get()}")
             implementation("org.flywaydb:flyway-community-db-support:${flyway.get()}")
             implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlin.get()}")

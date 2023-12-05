@@ -1,7 +1,7 @@
 package nl.strmark.piradio.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import nl.strmark.piradio.properties.PiRadioProperties
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.CrossOrigin

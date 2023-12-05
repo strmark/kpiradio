@@ -1,7 +1,7 @@
 package nl.strmark.piradio.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import nl.strmark.piradio.entity.DefaultWebRadio
 import nl.strmark.piradio.payload.PlayerRequest
 import nl.strmark.piradio.payload.PlayerStatus

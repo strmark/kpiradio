@@ -1,6 +1,7 @@
 package nl.strmark.piradio.controller
 
-import mu.KotlinLogging
+
+import io.github.oshai.kotlinlogging.KotlinLogging
 import nl.strmark.piradio.entity.Alarm
 import nl.strmark.piradio.exception.ResourceNotFoundException
 import nl.strmark.piradio.payload.ScheduleAlarmResponse
@@ -137,7 +138,7 @@ class AlarmController(
             addToCronDays(alarm.sunday, "SUN", cronDays)
         }
 
-        logger.info("$cronSchedule${cronDays.joinToString(",")}")
+        logger.info { "$cronSchedule${cronDays.joinToString(",")}" }
         return "$cronSchedule${cronDays.joinToString(",")}"
     }
 
