@@ -45,7 +45,6 @@ allprojects {
             }
             implementation("org.yaml:snakeyaml:${snakeyaml.get()}")
             developmentOnly("org.springframework.boot:spring-boot-devtools")
-            implementation("org.springdoc:springdoc-openapi-kotlin-tests:${swagger.get()}")
             implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${swagger.get()}")
             testCompileOnly("org.junit.jupiter:junit-jupiter-api:${junit.get()}")
             testCompileOnly("org.junit.jupiter:junit-jupiter-engine:${junit.get()}")
