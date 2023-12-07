@@ -6,6 +6,7 @@ plugins {
         id("org.springframework.boot") version springboot
         id("io.spring.dependency-management") version dependencymanagement
         id("com.github.ben-manes.versions") version manes
+        id("org.owasp.dependencycheck") version owasp
         id("org.sonarqube") version sonarqube
         kotlin("jvm") version kotlin
         kotlin("plugin.spring") version kotlin
@@ -42,8 +43,8 @@ allprojects {
                 }
             }
             implementation("org.jobrunr:jobrunr-spring-boot-3-starter:${jobrunr.get()}")
-            implementation("org.springdoc:springdoc-openapi-kotlin-tests:${swagger.get()}")
             implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${swagger.get()}")
+
             implementation("org.yaml:snakeyaml:${snakeyaml.get()}")
 
             developmentOnly("org.springframework.boot:spring-boot-devtools")
