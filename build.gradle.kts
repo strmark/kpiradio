@@ -76,6 +76,11 @@ tasks.withType<DependencyUpdatesTask> {
     }
 }
 
+dependencyCheck {
+    analyzers.assemblyEnabled = false
+    analyzers.retirejs.enabled = false
+}
+
 sonarqube {
     properties {
         property("sonar.host.url", "https://sonarcloud.io")
