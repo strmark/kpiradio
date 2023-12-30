@@ -26,5 +26,6 @@ jobs:
         run: ls -l ./database/piradio.*
       - name: Build with Gradle
         run: ./gradlew build -x test
-      - name: Build dependencyCheck
-        run: ./gradlew dependencyCheckAnalyze
+# Builds fine local but not in a workflow
+#      - name: Build dependencyCheck
+#        run: ./gradlew dependencyCheckAnalyze
