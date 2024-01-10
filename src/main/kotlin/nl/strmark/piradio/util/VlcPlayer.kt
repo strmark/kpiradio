@@ -1,6 +1,6 @@
 package nl.strmark.piradio.util
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import nl.strmark.piradio.properties.PiRadioProperties
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -15,7 +15,7 @@ class VlcPlayer {
     private var vlcPlayerProcess: Process? = null
 
     fun open(url: String, autoStopMinutes: Long) {
-        logger.info("url; $url")
+        logger.info { "url; $url" }
         when {
             vlcPlayerProcess != null -> {
                 stopVlcPlayer()

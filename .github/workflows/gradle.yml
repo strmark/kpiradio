@@ -12,20 +12,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 21
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'temurin' # See 'Supported distributions' for available options
-        java-version: '21'
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Grant write permission for database
-      run: chmod a+w ./database/piradio.*
-    - name: Check permissions
-      run: ls -l ./database/piradio.*
-    - name: Build with Gradle
-      run: ./gradlew build -x test
-#   dependency check not compatible with java 21.0.1
-#    - name: Build dependencyCheck
-#      run: ./gradlew dependencyCheckAnalyze
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '17'
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Grant write permission for database
+        run: chmod a+w ./database/piradio.*
+      - name: Check permissions
+        run: ls -l ./database/piradio.*
+      - name: Build with Gradle
+        run: ./gradlew build -x test
+# Builds fine local but not in a workflow
+#      - name: Build dependencyCheck
+#        run: ./gradlew dependencyCheckAnalyze
