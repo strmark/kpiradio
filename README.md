@@ -3,7 +3,7 @@ Kotlin Pi Clock Radio Backend
 
 Let your Raspberry Pi stream radio stations using VLC and turn the Pi into a Clock radio by setting an alarm. You can set the alarm, the radio stations and the volume of the Pi in a browser and controlled i.e. with your phone.
 
-This part of the project is written with Spring-boot with Kotlin, Swagger, H2 database, VLC and the Quartz scheduler to provide the backend REST API.
+This part of the project is written with Spring-boot with Kotlin, Swagger, H2 database, VLC and the JobRubr scheduler to provide the backend REST API.
 
 ## Installation 
 This installation procedure will work on Raspian.
