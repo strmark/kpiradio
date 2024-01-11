@@ -1,11 +1,11 @@
 [versions]
 dependencymanagement = "1.1.4"
-flyway = "10.4.1"
+flyway = "10.5.0"
 h2db = "2.2.224"
 jackson = "2.16.1"
 jobrunr = "6.3.4"
 junit = "5.10.1"
-klogging = "6.0.1"
+klogging = "6.0.2"
 kotlin = "1.9.22"
 kotlinx = "1.6.2"
 manes = "0.50.0"
