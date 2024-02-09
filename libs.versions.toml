@@ -1,7 +1,6 @@
 [versions]
 dependencymanagement = "1.1.4"
-flyway = "10.7.1"
-flywaydb = "10.7.0"
+flyway = "10.7.2"
 h2db = "2.2.224"
 jackson = "2.16.1"
 jobrunr = "6.3.4"
