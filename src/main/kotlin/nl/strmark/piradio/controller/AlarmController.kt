@@ -69,7 +69,7 @@ class AlarmController(
             ?.let { alarm -> deleteAndResponseOK(alarmId, alarm) } ?: notFound().build()
 
     private fun deleteAndResponseOK(alarmId: Int, alarm: Alarm): ResponseEntity<Long> {
-        jobScheduler.delete(PI_RADIO + alarmId)
+        jobScheduler.deleteRecurringJob(PI_RADIO + alarmId)
         alarmRepository.delete(alarm)
         return ok().build()
     }
@@ -93,7 +93,7 @@ class AlarmController(
         cronSchedule: String
     ) {
         webRadioRepository.findById(webRadioId).let { webRadioOptional ->
-            jobScheduler.delete(PI_RADIO + alarmId)
+            jobScheduler.deleteRecurringJob(PI_RADIO + alarmId)
             if (isActive) {
                 webRadioOptional.get().url.let { url ->
                     jobScheduler.scheduleRecurrently<VlcPlayer>(PI_RADIO + alarmId, cronSchedule) { vlcPlayer ->
