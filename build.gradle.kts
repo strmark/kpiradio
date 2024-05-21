@@ -1,5 +1,7 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.gradle.api.JavaVersion.VERSION_17
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
     with(kpiLibs.versions) {
@@ -17,7 +19,7 @@ plugins {
 allprojects {
     group = "nl.strmark"
     version = "0.0.1-SNAPSHOT"
-    java.sourceCompatibility = JavaVersion.VERSION_17
+    java.sourceCompatibility = VERSION_17
 
     repositories {
         mavenCentral()
@@ -55,10 +57,10 @@ allprojects {
     }
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
+tasks.withType<KotlinJvmCompile> {
+    compilerOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "17"
+        jvmTarget = JVM_17
     }
 }
 
