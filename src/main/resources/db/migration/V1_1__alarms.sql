@@ -1,7 +1,7 @@
 create table alarms
 (
     id                bigint  not null,
-    name              varchar(255),
+    name              varchar2(255),
     monday            boolean not null,
     tuesday           boolean not null,
     wednesday         boolean not null,

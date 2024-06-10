@@ -1,8 +1,8 @@
 create table webradios
 (
     id         bigint  not null,
-    name       varchar(255),
-    url        varchar(255),
+    name       varchar2(255),
+    url        varchar2(255),
     constraint web_radios_pk primary key (id)
 );
 
