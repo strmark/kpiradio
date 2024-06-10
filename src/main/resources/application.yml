@@ -1,5 +1,3 @@
-## Hibernate Properties
-# Hibernate ddl auto (create, create-drop, validate, update)
 spring:
   datasource:
     name: piradio
@@ -12,6 +10,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
+        # Hibernate ddl auto (create, create-drop, validate, update)
         ddl-auto: update
     show-sql: true
   # defer-datasource-initialization: false
