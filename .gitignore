@@ -22,7 +22,8 @@
 # Default ignored files
 /.idea/workspace.xml
 /build/
-.gradle
+.gradle/
+.kotlin/
 
 ### VS Code ###
 .vscode/
