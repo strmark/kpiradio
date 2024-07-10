@@ -1,5 +1,5 @@
 [versions]
-dependencymanagement = "1.1.5"
+dependencymanagement = "1.1.6"
 flyway = "10.15.2"
 flywaydb = "10.12.0"
 h2db = "2.2.224"
