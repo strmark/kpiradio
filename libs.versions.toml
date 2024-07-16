@@ -2,7 +2,7 @@
 dependencymanagement = "1.1.6"
 flyway = "10.15.2"
 flywaydb = "10.12.0"
-h2db = "2.2.224"
+h2db = "2.3.230"
 jackson = "2.17.1"
 jobrunr = "7.2.2"
 junit = "5.10.3"
