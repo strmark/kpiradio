@@ -12,14 +12,7 @@ import org.jobrunr.scheduling.JobScheduler
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.notFound
 import org.springframework.http.ResponseEntity.ok
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 @RestController
@@ -36,13 +29,15 @@ class AlarmController(
     fun saveAlarm(@RequestBody alarm: Alarm) =
         alarmRepository.save(alarm).let { savedAlarm ->
             if (savedAlarm.isActive) {
-                scheduleAlarm(
-                    savedAlarm.id,
-                    savedAlarm.webRadio,
-                    true,
-                    savedAlarm.autoStopMinutes,
-                    getCronSchedule(savedAlarm)
-                )
+                savedAlarm.id.let {
+                    scheduleAlarm(
+                        savedAlarm.id,
+                        savedAlarm.webRadio,
+                        true,
+                        savedAlarm.autoStopMinutes,
+                        getCronSchedule(savedAlarm)
+                    )
+                }
             }
         }
 
@@ -86,7 +81,7 @@ class AlarmController(
     }
 
     private fun scheduleAlarm(
-        alarmId: Int,
+        alarmId: Int?,
         webRadioId: Int,
         isActive: Boolean,
         autoStopMinutes: Int,
@@ -100,7 +95,12 @@ class AlarmController(
                         vlcPlayer.open(url, autoStopMinutes.toLong())
                     }
                 }
-                ScheduleAlarmResponse(true, PI_RADIO + alarmId, autoStopMinutes.toString(), "Alarm Scheduled Successfully!")
+                ScheduleAlarmResponse(
+                    true,
+                    PI_RADIO + alarmId,
+                    autoStopMinutes.toString(),
+                    "Alarm Scheduled Successfully!"
+                )
             }
         }
     }

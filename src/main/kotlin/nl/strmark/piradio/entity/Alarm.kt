@@ -12,7 +12,7 @@ class Alarm(
 
     @Id
     @GeneratedValue
-    var id: Int,
+    var id: Int?,
 
     @Column(length = 50, nullable = false, unique = false)
     var name: String,
