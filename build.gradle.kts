@@ -50,11 +50,8 @@ allprojects {
             implementation("org.yaml:snakeyaml:${snakeyaml.get()}")
 
             developmentOnly("org.springframework.boot:spring-boot-devtools")
-            testCompileOnly("org.junit.jupiter:junit-jupiter-api:${junit.get()}")
-            testCompileOnly("org.junit.jupiter:junit-jupiter-engine:${junit.get()}")
-            testRuntimeOnly("org.junit.platform:junit-platform-commons:${junitplatform.get()}")
-            testRuntimeOnly("org.junit.platform:junit-platform-engine:${junitplatform.get()}")
-            testRuntimeOnly("org.junit.platform:junit-platform-launcher:${junitplatform.get()}")
+            testCompileOnly("org.junit.jupiter:junit-jupiter:${junit.get()}")
+            testRuntimeOnly("org.junit.platform:junit-platform-launcher")
             testImplementation("org.springframework.boot:spring-boot-starter-test:${springboot.get()}")
         }
     }
