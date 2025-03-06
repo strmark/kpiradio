@@ -81,6 +81,7 @@ tasks.withType<DependencyUpdatesTask> {
 dependencyCheck {
     analyzers.assemblyEnabled = false
     analyzers.retirejs.enabled = false
+    nvd.apiKey = System.getenv("NVDAPIKEY")
 }
 
 sonarqube {
