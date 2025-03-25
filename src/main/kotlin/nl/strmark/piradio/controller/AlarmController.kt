@@ -29,15 +29,13 @@ class AlarmController(
     fun saveAlarm(@RequestBody alarm: Alarm) =
         alarmRepository.save(alarm).let { savedAlarm ->
             if (savedAlarm.isActive) {
-                savedAlarm.id.let {
-                    scheduleAlarm(
-                        savedAlarm.id,
-                        savedAlarm.webRadio,
-                        true,
-                        savedAlarm.autoStopMinutes,
-                        getCronSchedule(savedAlarm)
-                    )
-                }
+                scheduleAlarm(
+                    savedAlarm.id,
+                    savedAlarm.webRadio,
+                    true,
+                    savedAlarm.autoStopMinutes,
+                    getCronSchedule(savedAlarm)
+                )
             }
         }
 

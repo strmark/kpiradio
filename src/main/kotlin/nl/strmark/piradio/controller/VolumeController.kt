@@ -16,7 +16,7 @@ class VolumeController(private val objectMapper: ObjectMapper) {
     private lateinit var piRadioProperties: PiRadioProperties
 
     @PostMapping(path = ["/volumeDown"], produces = ["application/json"])
-    fun vVolumeDown(): String {
+    fun volumeDown(): String {
         setDeviceVolume(piRadioProperties.amixer.steps + "-")
         return objectMapper.writeValueAsString("Volume down")
     }
