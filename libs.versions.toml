@@ -1,10 +1,10 @@
 [versions]
 dependencymanagement = "1.1.7"
-flyway = "11.7.0"
+flyway = "11.7.1"
 flywaydb = "10.17.0"
 h2db = "2.3.232"
 jackson = "2.18.3"
-jobrunr = "7.4.1"
+jobrunr = "7.5.0"
 junit = "5.12.2"
 klogging = "7.0.6"
 kotlin = "2.1.20"
