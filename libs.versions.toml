@@ -1,6 +1,6 @@
 [versions]
 dependencymanagement = "1.1.7"
-flyway = "11.8.0"
+flyway = "11.8.1"
 flywaydb = "10.18.0"
 h2db = "2.3.232"
 jackson = "2.19.0"
@@ -14,4 +14,4 @@ owasp = "12.1.1"
 snakeyaml = "2.4"
 springboot = "3.4.5"
 sonarqube = "6.1.0.5360"
-swagger = "2.8.6"
+swagger = "2.8.8"
