@@ -59,7 +59,7 @@ allprojects {
 
 tasks.withType<KotlinJvmCompile> {
     compilerOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
+        freeCompilerArgs = listOf("-Xjsr305=strict", "-Xannotation-default-target=param-property")
         jvmTarget = JVM_17
     }
 }
@@ -98,3 +98,4 @@ fun isNonStable(version: String): Boolean {
     val isStable = stableKeyword || regex.matches(version)
     return isStable.not()
 }
+
