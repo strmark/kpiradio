@@ -51,7 +51,7 @@ allprojects {
 
             developmentOnly("org.springframework.boot:spring-boot-devtools")
             testCompileOnly("org.junit.jupiter:junit-jupiter:${junit.get()}")
-            testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+            testRuntimeOnly("org.junit.platform:junit-platform-launcher:${junit.get()}")
             testImplementation("org.springframework.boot:spring-boot-starter-test:${springboot.get()}")
         }
     }
@@ -69,7 +69,7 @@ tasks.withType<Test> {
 }
 
 tasks.withType<Wrapper> {
-    gradleVersion = "9.0.0"
+    gradleVersion = "9.1.0"
 }
 
 tasks.withType<DependencyUpdatesTask> {
