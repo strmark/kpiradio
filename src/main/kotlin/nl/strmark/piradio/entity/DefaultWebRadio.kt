@@ -9,5 +9,5 @@ import jakarta.persistence.Table
 class DefaultWebRadio(
     @Id
     var id: Int,
-    var webRadioId: Int
+    var webRadioId: Int?
 )

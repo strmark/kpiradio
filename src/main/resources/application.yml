@@ -24,6 +24,8 @@ server:
   port: 8000
 
 jobrunr:
+  job-scheduler:
+    enabled: true
   background-job-server:
     enabled: true
   dashboard:

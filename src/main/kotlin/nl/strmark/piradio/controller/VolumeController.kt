@@ -1,16 +1,16 @@
 package nl.strmark.piradio.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.oshai.kotlinlogging.KotlinLogging
 import nl.strmark.piradio.properties.PiRadioProperties
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
+import tools.jackson.databind.json.JsonMapper
 
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 @RestController
-class VolumeController(private val objectMapper: ObjectMapper) {
+class VolumeController(private val objectMapper: JsonMapper) {
 
     @Autowired
     private lateinit var piRadioProperties: PiRadioProperties

@@ -1,6 +1,5 @@
 package nl.strmark.piradio.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.oshai.kotlinlogging.KotlinLogging
 import nl.strmark.piradio.entity.DefaultWebRadio
 import nl.strmark.piradio.payload.PlayerRequest
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-
+import tools.jackson.databind.json.JsonMapper
 
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 @RestController
@@ -21,7 +20,7 @@ class PlayerController(
     private val webRadioRepository: WebRadioRepository,
     private val defaultWebradioRepository: DefaultWebradioRepository,
     private val vlcPlayer: VlcPlayer,
-    private val objectMapper: ObjectMapper
+    private val objectMapper: JsonMapper
 ) {
 
     @GetMapping(path = ["/player"], produces = ["application/json"])
@@ -73,7 +72,7 @@ class PlayerController(
             }
         }
 
-    private fun setDefaultWebRadio(webRadioId: Int) {
+    private fun setDefaultWebRadio(webRadioId: Int?) {
         defaultWebradioRepository.deleteAll()
         defaultWebradioRepository.save(DefaultWebRadio(1, webRadioId))
     }
