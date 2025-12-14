@@ -5,23 +5,25 @@ import nl.strmark.piradio.properties.PiRadioProperties
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import tools.jackson.databind.json.JsonMapper
 
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
+@RequestMapping("/volume")
 @RestController
 class VolumeController(private val objectMapper: JsonMapper) {
 
     @Autowired
     private lateinit var piRadioProperties: PiRadioProperties
 
-    @PostMapping(path = ["/volumeDown"], produces = ["application/json"])
+    @PostMapping(path = ["down"], produces = ["application/json"])
     fun volumeDown(): String {
         setDeviceVolume(piRadioProperties.amixer.steps + "-")
         return objectMapper.writeValueAsString("Volume down")
     }
 
-    @PostMapping(path = ["/volumeUp"], produces = ["application/json"])
+    @PostMapping(path = ["up"], produces = ["application/json"])
     fun volumeUp(): String {
         setDeviceVolume(piRadioProperties.amixer.steps + "+")
         return objectMapper.writeValueAsString("Volume up")

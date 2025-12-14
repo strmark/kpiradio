@@ -28,6 +28,7 @@ class Alarm(
     var hour: Int,
     @Column(name = "minutes")
     var minute: Int,
+    @Column(name = "auto_stop_minutes")
     var autoStopMinutes: Int,
     var isActive: Boolean,
     var webRadio: Int

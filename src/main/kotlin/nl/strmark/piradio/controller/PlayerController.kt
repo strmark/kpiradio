@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import tools.jackson.databind.json.JsonMapper
 
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 @RestController
+@RequestMapping("/player")
 class PlayerController(
     private val webRadioRepository: WebRadioRepository,
     private val defaultWebradioRepository: DefaultWebradioRepository,
@@ -23,10 +25,10 @@ class PlayerController(
     private val objectMapper: JsonMapper
 ) {
 
-    @GetMapping(path = ["/player"], produces = ["application/json"])
+    @GetMapping(produces = ["application/json"])
     fun get(): String = objectMapper.writeValueAsString(status)
 
-    @PostMapping(path = ["/player"], produces = ["application/json"])
+    @PostMapping(produces = ["application/json"])
     fun updatePlayer(@RequestBody player: PlayerRequest): String {
         logger.info { "WebRadio: ${player.webRadio}" }
         logger.info { "Status: ${player.status}" }
@@ -40,7 +42,7 @@ class PlayerController(
         try {
             // no timer so minutes 0
             status = PlayerStatus("on")
-            if (url != null && autoStopMinutes != null) vlcPlayer.open(url, autoStopMinutes.toLong())
+            if (url != null) vlcPlayer.open(url, (autoStopMinutes ?: 180).toLong())
         } catch (exception: Exception) {
             logger.error { "$exception.message, $exception" }
         }

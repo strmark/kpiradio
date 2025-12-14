@@ -2,6 +2,7 @@ package nl.strmark.piradio.controller
 
 import nl.strmark.piradio.entity.WebRadio
 import nl.strmark.piradio.exception.ResourceNotFoundException
+import nl.strmark.piradio.repository.DefaultWebradioRepository
 import nl.strmark.piradio.repository.WebRadioRepository
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -16,21 +17,27 @@ import org.springframework.web.bind.annotation.RestController
 
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 @RestController
-@RequestMapping("/")
-class WebRadioController(private val webRadioRepository: WebRadioRepository) {
+@RequestMapping("/webRadio")
+class WebRadioController(private val webRadioRepository: WebRadioRepository, private val defaultWebradioRepository: DefaultWebradioRepository) {
 
-    @GetMapping("/webRadio")
+    @GetMapping
     fun findAll(): MutableList<WebRadio?> = webRadioRepository.findAll()
 
-    @PostMapping("/webRadio")
+    @GetMapping(path = ["default"])
+    fun getDefault(): String =
+        defaultWebradioRepository.findAll().first().webRadioId?.let { id ->
+            webRadioRepository.findById(id).get().name
+        }.toString()
+
+    @PostMapping
     fun saveWebRadio(@RequestBody webRadioRequest: WebRadio): WebRadio = webRadioRepository.save(webRadioRequest)
 
-    @GetMapping("/webRadio/{id}")
+    @GetMapping("{id}")
     fun findById(@PathVariable(value = "id") webRadioId: Int): WebRadio? =
         webRadioRepository.findById(webRadioId)
             .orElseThrow { ResourceNotFoundException(WEBRADIO, "id", webRadioId) }
 
-    @PutMapping("/webRadio/{id}")
+    @PutMapping("{id}")
     fun saveWebRadio(
         @PathVariable(value = "id") webRadioId: Int,
         @RequestBody webRadioRequest: WebRadio
@@ -43,7 +50,7 @@ class WebRadioController(private val webRadioRepository: WebRadioRepository) {
                 webRadioRepository.save(webRadio)
             }
 
-    @DeleteMapping("/webRadio/{id}")
+    @DeleteMapping("{id}")
     fun deleteWebRadio(@PathVariable(value = "id") webRadioId: Int): ResponseEntity<Long> =
         webRadioRepository.findById(webRadioId)
             .orElseThrow { ResourceNotFoundException(WEBRADIO, "id", webRadioId) }
