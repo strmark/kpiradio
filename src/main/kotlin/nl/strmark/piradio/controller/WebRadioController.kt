@@ -14,52 +14,59 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import tools.jackson.databind.json.JsonMapper
 
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 @RestController
 @RequestMapping("/webRadio")
-class WebRadioController(private val webRadioRepository: WebRadioRepository, private val defaultWebradioRepository: DefaultWebradioRepository) {
+class WebRadioController(
+    private val webRadioRepository: WebRadioRepository,
+    private val defaultWebradioRepository: DefaultWebradioRepository,
+    private val objectMapper: JsonMapper
+) {
 
     @GetMapping
-    fun findAll(): MutableList<WebRadio?> = webRadioRepository.findAll()
+    fun findAll(): MutableList<WebRadio> = webRadioRepository.findAll()
 
-    @GetMapping(path = ["default"])
+    @GetMapping(path = ["default"], produces = ["application/json"])
     fun getDefault(): String =
-        defaultWebradioRepository.findAll().first().webRadioId?.let { id ->
-            webRadioRepository.findById(id).get().name
-        }.toString()
-
-    @PostMapping
-    fun saveWebRadio(@RequestBody webRadioRequest: WebRadio): WebRadio = webRadioRepository.save(webRadioRequest)
-
-    @GetMapping("{id}")
-    fun findById(@PathVariable(value = "id") webRadioId: Int): WebRadio? =
-        webRadioRepository.findById(webRadioId)
-            .orElseThrow { ResourceNotFoundException(WEBRADIO, "id", webRadioId) }
-
-    @PutMapping("{id}")
-    fun saveWebRadio(
-        @PathVariable(value = "id") webRadioId: Int,
-        @RequestBody webRadioRequest: WebRadio
-    ): WebRadio? =
-        webRadioRepository.findById(webRadioId)
-            .orElseThrow { ResourceNotFoundException(WEBRADIO, "id", webRadioId) }
-            ?.let { webRadio ->
-                webRadio.name = webRadioRequest.name
-                webRadio.url = webRadioRequest.url
-                webRadioRepository.save(webRadio)
+        objectMapper.writeValueAsString(
+            defaultWebradioRepository.findAll().first().webRadioId?.let { id ->
+                webRadioRepository.findById(id).get().name
             }
+        )
 
-    @DeleteMapping("{id}")
-    fun deleteWebRadio(@PathVariable(value = "id") webRadioId: Int): ResponseEntity<Long> =
-        webRadioRepository.findById(webRadioId)
-            .orElseThrow { ResourceNotFoundException(WEBRADIO, "id", webRadioId) }
-            ?.let { webRadio ->
-                webRadioRepository.delete(webRadio)
-                ResponseEntity.ok().build()
-            } ?: ResponseEntity.notFound().build()
+@PostMapping
+fun saveWebRadio(@RequestBody webRadioRequest: WebRadio): WebRadio = webRadioRepository.save(webRadioRequest)
 
-    companion object {
-        private const val WEBRADIO = "WebRadio"
-    }
+@GetMapping("{id}")
+fun findById(@PathVariable(value = "id") webRadioId: Int): WebRadio? =
+    webRadioRepository.findById(webRadioId)
+        .orElseThrow { ResourceNotFoundException(WEBRADIO, "id", webRadioId) }
+
+@PutMapping("{id}")
+fun saveWebRadio(
+    @PathVariable(value = "id") webRadioId: Int,
+    @RequestBody webRadioRequest: WebRadio
+): WebRadio? =
+    webRadioRepository.findById(webRadioId)
+        .orElseThrow { ResourceNotFoundException(WEBRADIO, "id", webRadioId) }
+        ?.let { webRadio ->
+            webRadio.name = webRadioRequest.name
+            webRadio.url = webRadioRequest.url
+            webRadioRepository.save(webRadio)
+        }
+
+@DeleteMapping("{id}")
+fun deleteWebRadio(@PathVariable(value = "id") webRadioId: Int): ResponseEntity<Long> =
+    webRadioRepository.findById(webRadioId)
+        .orElseThrow { ResourceNotFoundException(WEBRADIO, "id", webRadioId) }
+        ?.let { webRadio ->
+            webRadioRepository.delete(webRadio)
+            ResponseEntity.ok().build()
+        } ?: ResponseEntity.notFound().build()
+
+companion object {
+    private const val WEBRADIO = "WebRadio"
+}
 }

@@ -46,8 +46,8 @@ allprojects {
             implementation("tools.jackson.module:jackson-module-kotlin")
 
             developmentOnly("org.springframework.boot:spring-boot-devtools")
-            runtimeOnly("com.h2database:h2")
             testImplementation("org.springframework.boot:spring-boot-starter-test:${springboot.get()}")
+            testImplementation("org.springframework.boot:spring-boot-starter-flyway-test:${springboot.get()}")
             testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test:${springboot.get()}")
             testImplementation("org.springframework.boot:spring-boot-starter-validation-test:${springboot.get()}")
             testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test:${springboot.get()}")

@@ -24,7 +24,7 @@ class AlarmController(
 ) {
 
     @GetMapping
-    fun findAll(): MutableList<Alarm?> = alarmRepository.findAll()
+    fun findAll(): MutableList<Alarm> = alarmRepository.findAll()
 
     @PostMapping
     fun saveAlarm(@RequestBody alarm: Alarm) =
