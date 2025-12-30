@@ -69,7 +69,7 @@ class PlayerController(
     private fun getUrl(webRadioId: Int?) =
         webRadioId?.let { webradio ->
             when (webradio) {
-                0 -> defaultWebradioRepository.findAll().first()?.webRadioId?.let { webRadioRepository.findById(it).get().url }
+                0 -> defaultWebradioRepository.findAll().first().webRadioId?.let { webRadioRepository.findById(it).get().url }
                 else -> webRadioRepository.findById(webradio).get().let { setDefaultWebRadio(it.id); it.url }
             }
         }
