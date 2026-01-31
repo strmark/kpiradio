@@ -27,7 +27,6 @@ allprojects {
 
     with(kpiLibs.versions) {
         dependencies {
-            implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${jackson.get()}")
             implementation("com.h2database:h2:${h2db.get()}")
             implementation("io.github.oshai:kotlin-logging-jvm:${klogging.get()}")
             implementation("org.flywaydb:flyway-core:${flyway.get()}")
@@ -35,24 +34,24 @@ allprojects {
             implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlin.get()}")
             implementation("org.jetbrains.kotlin:kotlin-stdlib:${kotlin.get()}")
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlinx.get()}")
+            implementation("org.springframework.boot:spring-boot-starter-actuator:${springboot.get()}")
             implementation("org.springframework.boot:spring-boot-starter-data-jpa:${springboot.get()}")
             implementation("org.springframework.boot:spring-boot-starter-validation:${springboot.get()}")
-            implementation("org.springframework.boot:spring-boot-starter-web:${springboot.get()}")
+            implementation("org.springframework.boot:spring-boot-starter-webmvc:${springboot.get()}")
             implementation("org.springframework.boot:spring-boot-starter-jetty:${springboot.get()}")
-            modules {
-                module("org.springframework.boot:spring-boot-starter-tomcat") {
-                    replacedBy("org.springframework.boot:spring-boot-starter-jetty", "Use Jetty instead of Tomcat")
-                }
-            }
-            implementation("org.jobrunr:jobrunr-spring-boot-3-starter:${jobrunr.get()}")
+            implementation("org.jobrunr:jobrunr-spring-boot-4-starter:${jobrunr.get()}")
+            implementation("org.jobrunr:jobrunr-kotlin-2.1-support:${jobrunr.get()}")
             implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${swagger.get()}")
-
             implementation("org.yaml:snakeyaml:${snakeyaml.get()}")
+            implementation("tools.jackson.module:jackson-module-kotlin")
 
             developmentOnly("org.springframework.boot:spring-boot-devtools")
-            testCompileOnly("org.junit.jupiter:junit-jupiter:${junit.get()}")
-            testRuntimeOnly("org.junit.platform:junit-platform-launcher")
             testImplementation("org.springframework.boot:spring-boot-starter-test:${springboot.get()}")
+            testImplementation("org.springframework.boot:spring-boot-starter-flyway-test:${springboot.get()}")
+            testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test:${springboot.get()}")
+            testImplementation("org.springframework.boot:spring-boot-starter-validation-test:${springboot.get()}")
+            testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test:${springboot.get()}")
+            testRuntimeOnly("org.junit.platform:junit-platform-launcher")
         }
     }
 }
@@ -69,7 +68,7 @@ tasks.withType<Test> {
 }
 
 tasks.withType<Wrapper> {
-    gradleVersion = "9.2.1"
+    gradleVersion = "9.3.0"
 }
 
 tasks.withType<DependencyUpdatesTask> {

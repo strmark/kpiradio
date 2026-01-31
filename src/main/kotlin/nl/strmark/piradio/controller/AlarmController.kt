@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.*
 
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
+@RequestMapping("/alarms")
 @RestController
 class AlarmController(
     private val alarmRepository: AlarmRepository,
@@ -22,10 +23,10 @@ class AlarmController(
     private val jobScheduler: JobScheduler
 ) {
 
-    @GetMapping("/alarms")
-    fun findAll(): MutableList<Alarm?> = alarmRepository.findAll()
+    @GetMapping
+    fun findAll(): MutableList<Alarm> = alarmRepository.findAll()
 
-    @PostMapping(path = ["/alarms"])
+    @PostMapping
     fun saveAlarm(@RequestBody alarm: Alarm) =
         alarmRepository.save(alarm).let { savedAlarm ->
             if (savedAlarm.isActive) {
@@ -39,12 +40,12 @@ class AlarmController(
             }
         }
 
-    @GetMapping(path = ["/alarms/{id}"])
+    @GetMapping(path = ["{id}"])
     fun findById(@PathVariable(value = "id") alarmId: Int) =
         alarmRepository.findById(alarmId)
             .orElseThrow { ResourceNotFoundException(ALARM, "id", alarmId) }
 
-    @PutMapping(path = ["/alarms/{id}"])
+    @PutMapping(path = ["{id}"])
     fun updateAlarm(
         @PathVariable(value = "id") alarmId: Int,
         @RequestBody alarmDetails: Alarm
@@ -55,7 +56,7 @@ class AlarmController(
             ?.let { alarm -> scheduleAndSave(alarmId, alarmDetails, alarm) }
     }
 
-    @DeleteMapping(path = ["/alarms/{id}"])
+    @DeleteMapping(path = ["{id}"])
     fun deleteAlarm(@PathVariable(value = "id") alarmId: Int): ResponseEntity<Long> =
         alarmRepository.findById(alarmId)
             .orElseThrow { ResourceNotFoundException(ALARM, "id", alarmId) }

@@ -1,5 +1,6 @@
 package nl.strmark.piradio.entity
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
@@ -9,5 +10,6 @@ import jakarta.persistence.Table
 class DefaultWebRadio(
     @Id
     var id: Int,
-    var webRadioId: Int
+    @Column(name = "web_radio_id")
+    var webRadioId: Int?
 )
