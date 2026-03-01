@@ -43,7 +43,7 @@ allprojects {
             implementation("org.jobrunr:jobrunr-kotlin-2.1-support:${jobrunr.get()}")
             implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${swagger.get()}")
             implementation("org.yaml:snakeyaml:${snakeyaml.get()}")
-            implementation("tools.jackson.module:jackson-module-kotlin")
+            implementation("tools.jackson.module:jackson-module-kotlin:${jackson.get()}")
 
             developmentOnly("org.springframework.boot:spring-boot-devtools")
             testImplementation("org.springframework.boot:spring-boot-starter-test:${springboot.get()}")
