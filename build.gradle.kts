@@ -51,7 +51,7 @@ allprojects {
             testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test:${springboot.get()}")
             testImplementation("org.springframework.boot:spring-boot-starter-validation-test:${springboot.get()}")
             testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test:${springboot.get()}")
-            testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+            testRuntimeOnly("org.junit.platform:junit-platform-launcher:${junit.get()}")
         }
     }
 }
