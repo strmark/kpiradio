@@ -7,7 +7,7 @@ plugins {
     with(kpiLibs.versions) {
         id("org.springframework.boot") version springboot
         id("io.spring.dependency-management") version dependencymanagement
-        id("com.github.ben-manes.versions") version manes
+        id("io.github.ben-manes.versions") version manes
         id("org.owasp.dependencycheck") version owasp
         id("org.sonarqube") version sonarqube
         kotlin("jvm") version kotlin
@@ -68,7 +68,7 @@ tasks.withType<Test> {
 }
 
 tasks.withType<Wrapper> {
-    gradleVersion = "9.6.1"
+    gradleVersion = "9.7.0"
 }
 
 tasks.withType<DependencyUpdatesTask> {
