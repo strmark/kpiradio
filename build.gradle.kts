@@ -58,7 +58,7 @@ allprojects {
 
 tasks.withType<KotlinJvmCompile> {
     compilerOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict", "-Xannotation-default-target=param-property")
+        freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = JVM_17
     }
 }
